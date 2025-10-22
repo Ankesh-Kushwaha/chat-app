@@ -15,14 +15,6 @@ Chatty is a **real-time chat application** built with **React, TypeScript, Tailw
 - 🔒 **Unique user identification** using UUIDs  
 - ⚡ Responsive design for desktop & mobile  
 
----
-
-## Screenshots
-
-![Chatty Screenshot](./screenshots/chat-screenshot.png)
-
----
-
 ## Tech Stack
 
 - **Frontend:** React + TypeScript + TailwindCSS  
