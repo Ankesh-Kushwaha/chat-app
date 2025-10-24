@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\ankes\\Desktop\\scalable-chat-app\\backend\\logs\\.87654f3a96578971a56dc01e42609e94bf0a3666-audit.json",
+    "files": [
+        {
+            "date": 1761331854919,
+            "name": "C:\\Users\\ankes\\Desktop\\scalable-chat-app\\backend\\logs\\app-2025-10-25.log",
+            "hash": "85a033038d0ce8528b1754d9bccea534689f21849e796c70d8e11cdc6f9b05c2"
+        }
+    ],
+    "hashType": "sha256"
+}

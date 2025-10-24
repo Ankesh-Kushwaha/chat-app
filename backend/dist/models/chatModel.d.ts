@@ -4,38 +4,38 @@ declare const ChatHistory: mongoose.Model<{
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps, {}, {}, {}, mongoose.Document<unknown, {}, {
     date: string;
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps, {}, {
     timestamps: true;
@@ -44,19 +44,19 @@ declare const ChatHistory: mongoose.Model<{
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps & {
     _id: mongoose.Types.ObjectId;
@@ -69,38 +69,38 @@ declare const ChatHistory: mongoose.Model<{
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     date: string;
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
@@ -109,19 +109,19 @@ declare const ChatHistory: mongoose.Model<{
     userId: mongoose.Types.ObjectId;
     messages: mongoose.Types.DocumentArray<{
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }> & {
         message: string;
+        timestamp: NativeDate;
         sender: "user" | "bot";
         image: string[];
-        timestamp: NativeDate;
     }>;
 } & mongoose.DefaultTimestampProps> & {
     _id: mongoose.Types.ObjectId;
