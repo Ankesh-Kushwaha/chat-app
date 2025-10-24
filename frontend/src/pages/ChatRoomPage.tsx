@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ChatRoom from "../components/ChatRoom";
+import ChatRoom from "../components/ChatRoom.tsx";
 import logo from "../../public/logo-icon-2.jpg";
 import { MessageSquare, Users, Settings } from "lucide-react";
 
