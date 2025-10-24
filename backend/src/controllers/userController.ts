@@ -38,7 +38,7 @@ export const userSignup = async(req:Request,res:Response) => {
        )
 
        //send email
-       await sendMail(email, name);
+       //await sendMail(email, name);
 
        if (newUser) {
          return res.status(200).json({
