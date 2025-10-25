@@ -2,3 +2,15 @@
 2025-10-25 00:25:04 [ERROR]: error while sending mail to :
 2025-10-25 00:27:56 [INFO]: signup endpoint got hit.
 2025-10-25 00:27:58 [ERROR]: error while sending mail to :
+2025-10-25 19:24:40 [INFO]: signup endpoint got hit.
+2025-10-25 19:29:01 [INFO]: getUserProfile endpoint get hit
+2025-10-25 19:29:01 [ERROR]: error while getting user profile:
+2025-10-25 19:32:19 [INFO]: getUserProfile endpoint hit
+2025-10-25 19:35:03 [INFO]:  send friend request endpoint hit
+2025-10-25 19:42:12 [INFO]: accept friend request hit.
+2025-10-25 19:42:47 [INFO]:  send friend request endpoint hit
+2025-10-25 19:43:04 [INFO]:  send friend request endpoint hit
+2025-10-25 19:43:13 [INFO]:  send friend request endpoint hit
+2025-10-25 19:44:09 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-25 19:45:46 [INFO]: accept friend request hit.
+2025-10-25 19:45:52 [INFO]: accept friend request hit.

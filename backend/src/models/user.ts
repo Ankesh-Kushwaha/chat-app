@@ -1,5 +1,12 @@
 import mongoose from 'mongoose';
 
+export interface IUser extends mongoose.Document {
+  name: string;
+  email: string;
+  password: string;
+  friends: mongoose.Types.ObjectId[];
+}
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,15 +25,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  friends: {
-    type: [String],
-    default: []
-  },
+  friends:[{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: {
     type: Date,
     default: Date.now,
   }
 }, { timestamps: true });
 
-const User= mongoose.model('User', userSchema);
-export default User;
+export const User= mongoose.model('User', userSchema);

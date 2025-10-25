@@ -1,17 +1,23 @@
 import mongoose from 'mongoose';
-declare const User: mongoose.Model<{
+export interface IUser extends mongoose.Document {
+    name: string;
+    email: string;
+    password: string;
+    friends: mongoose.Types.ObjectId[];
+}
+export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps, {}, {}, {}, mongoose.Document<unknown, {}, {
     name: string;
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps, {}, {
     timestamps: true;
@@ -20,7 +26,7 @@ declare const User: mongoose.Model<{
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps & {
     _id: mongoose.Types.ObjectId;
@@ -33,14 +39,14 @@ declare const User: mongoose.Model<{
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     name: string;
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
@@ -49,12 +55,11 @@ declare const User: mongoose.Model<{
     email: string;
     password: string;
     profilePic: string;
-    friends: string[];
+    friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
 } & mongoose.DefaultTimestampProps> & {
     _id: mongoose.Types.ObjectId;
 } & {
     __v: number;
 }>>;
-export default User;
 //# sourceMappingURL=user.d.ts.map

@@ -12,6 +12,13 @@ export const signupVerification = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
+export const loginVerification = z.object({
+  email: z.string({ required_error: "Email is required" })
+    .email("Invalid email format"),
+  password: z.string({ required_error: "Password is required" })
+    .min(6, "Password must be at least 6 characters"),
+})
+
 export const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
   try {
     schema.parse(req.body);

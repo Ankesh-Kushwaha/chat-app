@@ -17,15 +17,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    friends: {
-        type: [String],
-        default: []
-    },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     createdAt: {
         type: Date,
         default: Date.now,
     }
 }, { timestamps: true });
-const User = mongoose.model('User', userSchema);
-export default User;
+export const User = mongoose.model('User', userSchema);
 //# sourceMappingURL=user.js.map
