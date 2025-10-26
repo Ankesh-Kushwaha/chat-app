@@ -4,6 +4,7 @@ export interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;
+  bio: string;
   friends: mongoose.Types.ObjectId[];
 }
 
@@ -16,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  bio: {
+    type: String,
+    default:"",
   },
   password: {
     type: String,

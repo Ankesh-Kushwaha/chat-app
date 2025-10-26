@@ -10,9 +10,9 @@ import mongoose from 'mongoose';
 export const userSignup = async (req, res) => {
     try {
         logger.info("signup endpoint got hit.");
-        const { name, email, password } = req.body;
+        const { name, email, password, bio } = req.body;
         //validate the data;
-        const verify = signupVerification.parse({ name, email, password });
+        const verify = signupVerification.parse({ name, email, password, bio });
         if (!verify) {
             return res.status(400).json("invalid data");
         }
@@ -28,6 +28,7 @@ export const userSignup = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            bio
         });
         const createdUser = newUser.toObject();
         delete createdUser.password;

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import UserCard from "../components/UserCard.tsx";
@@ -162,7 +162,7 @@ const FriendsPage: React.FC = () => {
 
   const declineRequest = (requestId: string) => {
     setIncomingRequests((prev) => prev.filter((r) => r.id !== requestId));
-    toast.error("Declined request");
+    alert("Declined request");
   };
 
   useEffect(() => {

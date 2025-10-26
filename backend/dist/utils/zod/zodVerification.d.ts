@@ -5,14 +5,17 @@ export declare const signupVerification: z.ZodObject<{
     name: z.ZodString;
     email: z.ZodString;
     password: z.ZodString;
+    bio: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     name: string;
     email: string;
     password: string;
+    bio: string;
 }, {
     name: string;
     email: string;
     password: string;
+    bio: string;
 }>;
 export declare const loginVerification: z.ZodObject<{
     email: z.ZodString;

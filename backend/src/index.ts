@@ -7,12 +7,13 @@ import { databaseConnection } from "./utils/db/db.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 import userRouter from './routes/userRoutes.js'
+import CommunityRouter from './routes/community.js'
 
 databaseConnection();
 app.use(cors());
 app.use(express.json());
 app.use('/api/user', userRouter);
-
+app.use('/api/community', CommunityRouter);
 
 
 

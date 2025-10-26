@@ -167,3 +167,181 @@
 2025-10-26 05:36:28 [INFO]: getAllPendingRequest endpoint hit.
 2025-10-26 05:36:39 [INFO]: getUserProfile endpoint hit
 2025-10-26 05:36:39 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:41:29 [INFO]: get all user endpoints hit
+2025-10-26 05:41:29 [INFO]: get all user endpoints hit
+2025-10-26 05:41:32 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:41:32 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:42:00 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:42:00 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:42:10 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:42:10 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:44:08 [INFO]: get all user endpoints hit
+2025-10-26 05:44:08 [INFO]: get all user endpoints hit
+2025-10-26 05:44:08 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:44:08 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:44:24 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:44:24 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:45:13 [INFO]: get all user endpoints hit
+2025-10-26 05:45:13 [INFO]: get all user endpoints hit
+2025-10-26 05:45:13 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:14 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:21 [INFO]:  send friend request endpoint hit
+2025-10-26 05:45:23 [INFO]:  send friend request endpoint hit
+2025-10-26 05:45:25 [INFO]:  send friend request endpoint hit
+2025-10-26 05:45:41 [INFO]: accept friend request hit.
+2025-10-26 05:45:45 [INFO]: get all user endpoints hit
+2025-10-26 05:45:45 [INFO]: get all user endpoints hit
+2025-10-26 05:45:45 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:45 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:50 [INFO]: get all user endpoints hit
+2025-10-26 05:45:50 [INFO]: get all user endpoints hit
+2025-10-26 05:45:50 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:50 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:58 [INFO]: get all user endpoints hit
+2025-10-26 05:45:58 [INFO]: get all user endpoints hit
+2025-10-26 05:45:58 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:45:58 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:16 [INFO]: get all user endpoints hit
+2025-10-26 05:46:16 [INFO]: get all user endpoints hit
+2025-10-26 05:46:16 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:16 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:20 [INFO]: accept friend request hit.
+2025-10-26 05:46:24 [INFO]: get all user endpoints hit
+2025-10-26 05:46:24 [INFO]: get all user endpoints hit
+2025-10-26 05:46:26 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:26 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:47 [INFO]: get all user endpoints hit
+2025-10-26 05:46:47 [INFO]: get all user endpoints hit
+2025-10-26 05:46:47 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:46:47 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:47:07 [INFO]: get all user endpoints hit
+2025-10-26 05:47:07 [INFO]: get all user endpoints hit
+2025-10-26 05:47:07 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:47:07 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:47:37 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:47:37 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:48:22 [INFO]: get all user endpoints hit
+2025-10-26 05:48:22 [INFO]: get all user endpoints hit
+2025-10-26 05:48:22 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:48:22 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:48:29 [INFO]: accept friend request hit.
+2025-10-26 05:48:30 [INFO]: accept friend request hit.
+2025-10-26 05:48:43 [INFO]:  send friend request endpoint hit
+2025-10-26 05:48:48 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:48:48 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:56:47 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:56:47 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:57:33 [INFO]: get all user endpoints hit
+2025-10-26 05:57:33 [INFO]: get all user endpoints hit
+2025-10-26 05:57:34 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:57:34 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 05:57:38 [INFO]:  send friend request endpoint hit
+2025-10-26 05:58:00 [INFO]: getUserProfile endpoint hit
+2025-10-26 05:58:00 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:08:54 [INFO]: get all user endpoints hit
+2025-10-26 06:08:55 [INFO]: get all user endpoints hit
+2025-10-26 06:08:55 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:08:55 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:12:59 [INFO]: signup endpoint got hit.
+2025-10-26 06:13:05 [INFO]: get all user endpoints hit
+2025-10-26 06:13:05 [INFO]: get all user endpoints hit
+2025-10-26 06:13:05 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:05 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:17 [INFO]: get all user endpoints hit
+2025-10-26 06:13:18 [INFO]: get all user endpoints hit
+2025-10-26 06:13:20 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:20 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:31 [INFO]:  send friend request endpoint hit
+2025-10-26 06:13:44 [INFO]: get all user endpoints hit
+2025-10-26 06:13:44 [INFO]: get all user endpoints hit
+2025-10-26 06:13:44 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:44 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:13:47 [INFO]: accept friend request hit.
+2025-10-26 06:14:02 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:02 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:14 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:14 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:25 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:25 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:30 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:14:30 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:15:55 [INFO]: get all user endpoints hit
+2025-10-26 06:15:55 [INFO]: get all user endpoints hit
+2025-10-26 06:15:55 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:15:55 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:16:09 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:22 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:27 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:30 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:36 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:40 [INFO]:  send friend request endpoint hit
+2025-10-26 06:16:46 [INFO]: get all user endpoints hit
+2025-10-26 06:16:46 [INFO]: get all user endpoints hit
+2025-10-26 06:16:46 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:16:46 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:02 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:17:02 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:17:09 [INFO]: get all user endpoints hit
+2025-10-26 06:17:09 [INFO]: get all user endpoints hit
+2025-10-26 06:17:09 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:09 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:15 [INFO]: get all user endpoints hit
+2025-10-26 06:17:15 [INFO]: get all user endpoints hit
+2025-10-26 06:17:18 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:18 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:45 [INFO]: get all user endpoints hit
+2025-10-26 06:17:45 [INFO]: get all user endpoints hit
+2025-10-26 06:17:48 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:48 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:17:56 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:17:56 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:18:53 [INFO]: get all user endpoints hit
+2025-10-26 06:18:53 [INFO]: get all user endpoints hit
+2025-10-26 06:18:54 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:18:54 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:19:01 [INFO]: accept friend request hit.
+2025-10-26 06:19:05 [INFO]: accept friend request hit.
+2025-10-26 06:19:23 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:23 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:46 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:46 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:50 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:51 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:53 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:19:53 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:20:05 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:20:05 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:20:14 [INFO]: get all user endpoints hit
+2025-10-26 06:20:14 [INFO]: get all user endpoints hit
+2025-10-26 06:20:14 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:20:14 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:20:16 [INFO]:  send friend request endpoint hit
+2025-10-26 06:20:31 [INFO]:  send friend request endpoint hit
+2025-10-26 06:20:37 [INFO]:  send friend request endpoint hit
+2025-10-26 06:21:06 [INFO]: get all user endpoints hit
+2025-10-26 06:21:06 [INFO]: get all user endpoints hit
+2025-10-26 06:21:08 [INFO]: get all user endpoints hit
+2025-10-26 06:21:08 [INFO]: get all user endpoints hit
+2025-10-26 06:21:10 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:21:10 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:21:10 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:21:11 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:21:14 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:21:14 [INFO]: getUserProfile endpoint hit
+2025-10-26 06:25:05 [INFO]: signup endpoint got hit.
+2025-10-26 06:25:49 [INFO]: signup endpoint got hit.
+2025-10-26 06:26:29 [INFO]: signup endpoint got hit.
+2025-10-26 06:27:16 [INFO]: signup endpoint got hit.
+2025-10-26 06:27:49 [INFO]: signup endpoint got hit.
+2025-10-26 06:27:57 [INFO]: get all user endpoints hit
+2025-10-26 06:27:57 [INFO]: get all user endpoints hit
+2025-10-26 06:27:57 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 06:27:57 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 16:08:16 [INFO]: getUserProfile endpoint hit
+2025-10-26 16:08:16 [INFO]: getUserProfile endpoint hit
+2025-10-26 16:08:33 [INFO]: getUserProfile endpoint hit
+2025-10-26 16:08:34 [INFO]: getUserProfile endpoint hit
+2025-10-26 16:08:40 [INFO]: get all user endpoints hit
+2025-10-26 16:08:40 [INFO]: get all user endpoints hit
+2025-10-26 16:08:40 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 16:08:40 [INFO]: getAllPendingRequest endpoint hit.

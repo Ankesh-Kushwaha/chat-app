@@ -3,12 +3,14 @@ export interface IUser extends mongoose.Document {
     name: string;
     email: string;
     password: string;
+    bio: string;
     friends: mongoose.Types.ObjectId[];
 }
 export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
@@ -16,6 +18,7 @@ export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
@@ -25,6 +28,7 @@ export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
@@ -38,6 +42,7 @@ export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
@@ -45,6 +50,7 @@ export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;
@@ -54,6 +60,7 @@ export declare const User: mongoose.Model<{
     name: string;
     email: string;
     password: string;
+    bio: string;
     profilePic: string;
     friends: mongoose.Types.ObjectId[];
     createdAt: NativeDate;

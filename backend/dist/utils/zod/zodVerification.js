@@ -7,6 +7,7 @@ export const signupVerification = z.object({
     password: z
         .string({ required_error: "Password is required" })
         .min(6, "Password must be at least 6 characters"),
+    bio: z.string(),
 });
 export const loginVerification = z.object({
     email: z.string({ required_error: "Email is required" })

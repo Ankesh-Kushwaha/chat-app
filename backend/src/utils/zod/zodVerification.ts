@@ -10,6 +10,7 @@ export const signupVerification = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(6, "Password must be at least 6 characters"),
+  bio: z.string(),
 });
 
 export const loginVerification = z.object({
@@ -17,6 +18,11 @@ export const loginVerification = z.object({
     .email("Invalid email format"),
   password: z.string({ required_error: "Password is required" })
     .min(6, "Password must be at least 6 characters"),
+})
+
+export const communityCreationVerification = z.object({
+  name: z.string({ required_error: "community name is required" }),
+  description: z.string({ required_error: "community description is required" })
 })
 
 export const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {

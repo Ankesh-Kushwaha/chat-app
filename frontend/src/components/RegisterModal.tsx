@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, Text } from "lucide-react";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -16,6 +16,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -39,11 +40,11 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
         ? "http://localhost:3000/api/user/login"
         : "http://localhost:3000/api/user/signup";
 
-      const payload = isLogin ? { email, password } : { name, email, password };
+      const payload = isLogin ? { email, password } : { name, email, password,bio };
       const res = await axios.post(url, payload);
 
       if (res.status === 200) {
-        alert(isLogin ? "Login successful!" : "Account created!");
+        toast.success(isLogin ? "Login successful!" : "Account created!");
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.createdUser._id);
         onAuthSuccess?.({ name: res.data.createdUser.name || name, email });
@@ -51,7 +52,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
         resetForm();
         navigate("/chatroom");
       } else {
-        alert(isLogin ? "Login failed!" : "Registration failed!");
+        toast.error(isLogin ? "Login failed!" : "Registration failed!");
       }
     } catch (err: any) {
       const message =
@@ -63,7 +64,7 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
   };
 
   return (
-    <div className="fixed mt-60 inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed mt-70 inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -112,10 +113,13 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {!isLogin && (
+          {!isLogin && <>
             <Input label="Name" icon={<User size={16} />} value={name} onChange={setName} />
-          )}
+            <Input label="bio" icon={<Text size={16} />} value={bio} onChange={setBio} />
+            </>
+          }
           <Input label="Email" icon={<Mail size={16} />} value={email} onChange={setEmail} />
+         
           <Input
             label="Password"
             icon={<Lock size={16} />}

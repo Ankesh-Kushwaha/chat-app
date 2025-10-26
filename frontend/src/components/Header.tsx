@@ -3,7 +3,7 @@ import logo from "../../public/logo-icon-2.jpg";
 import { Menu, User } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthModal } from "../components/RegisterModal.tsx";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import axios from 'axios';
 
 const Header: React.FC = () => {
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
            setUser({name:user.name,email:user.email})
          })
          .catch((err) => {
-           console.error("Failed to fetch user info:", err);
+           toast.error("Failed to fetch user info:", err);
          });
      }
    }, []);
