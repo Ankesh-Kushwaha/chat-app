@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import { sendMail } from '../utils/config/sendMail.js';
 import { FriendRequest } from '../models/friendRequest.js';
 import mongoose from 'mongoose';
+import type { AuthenticatedRequest } from '../middlewares/auth.js';
 
 
 export const userSignup = async (req: Request, res: Response) => {
@@ -35,6 +36,10 @@ export const userSignup = async (req: Request, res: Response) => {
       password: hashedPassword,
     })
 
+    const createdUser = newUser.toObject() as { [key: string]: any };
+    delete createdUser.password;
+
+
     //generate the token 
     const token = jwt.sign({
       userId: newUser._id,
@@ -48,7 +53,8 @@ export const userSignup = async (req: Request, res: Response) => {
       return res.status(200).json({
         success: true,
         token,
-        message: "user successfully logged in"
+        message: "user successfully logged in",
+        createdUser
       })
     }
   }
@@ -77,6 +83,9 @@ export const userLogin = async (req: Request, res: Response) => {
     const passwordVerification = await bcrypt.compare(password, user.password)
     if (!passwordVerification) return res.status(400).json("password is invalid");
     //generate  token 
+    const createdUser = user.toObject() as { [key: string]: any };
+    delete createdUser.password;
+
     const token = jwt.sign({
       userId: user._id,
     }, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '7d' }
@@ -85,6 +94,7 @@ export const userLogin = async (req: Request, res: Response) => {
       success: true,
       message: "user logged in successfully",
       token,
+      createdUser
     })
   }
   catch (err) {
@@ -159,7 +169,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
 export const getUserFriends = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.userId;
+    const userId = (req as AuthenticatedRequest).userId
     if (!userId) return res.status(400).json("userId is required");
     const user = await User.findById(userId)
       .populate({
@@ -171,15 +181,36 @@ export const getUserFriends = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "user friends data fetched successfully!",
-      friends: user,
+      friends:user.friends,
     });
   }
   catch (err) {
     if (err instanceof Error) {
-      logger.error("getting pending requests:", err.message);
+      logger.error("getting user friends requests:", err.message);
       res.status(500).json({ success: false, message: "Something went wrong" });
     } else {
       logger.error("error while getting pending request:", String(err));
+      res.status(500).json({ success: false, message: "Unknown error" });
+    }
+  }
+}
+
+export const getAllUser = async (req: Request, res: Response) => {
+  try {
+    logger.info("get all user endpoints hit");
+    const users = await User.find();
+    res.status(200).json({
+      success: true,
+      message: "all user fetched successfully",
+      users,
+    })
+  }
+  catch (err) {
+    if (err instanceof Error) {
+      logger.error("error while getting all user:", err.message);
+      res.status(500).json({ success: false, message: "Something went wrong" });
+    } else {
+      logger.error("error while getting all user:", String(err));
       res.status(500).json({ success: false, message: "Unknown error" });
     }
   }
@@ -283,15 +314,15 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
 export const getAllPendingRequest = async (req: Request, res: Response) => {
   try {
     logger.info("getAllPendingRequest endpoint hit.")
-    const userId = req.params.userId;
-    const requests = await FriendRequest.find({ receiver: userId, status: "pending" })
+    const userId = (req as AuthenticatedRequest).userId;
+    const pending = await FriendRequest.find({ receiver: userId, status: "pending" })
       .populate("sender", "name email");
 
     const sentRequest = await FriendRequest.find({ sender: userId, status: "pending" }).populate("sender", "name email");
     return res.status(200).json({
       success: true,
-      requests,
-      sentRequest
+      sentRequest,
+      pending
     });
   }
   catch (err) {

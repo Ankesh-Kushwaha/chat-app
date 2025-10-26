@@ -6,6 +6,7 @@ export declare const deleteProfile: (req: Request, res: Response) => Promise<exp
 export declare const updateProfile: (req: Request, res: Response) => Promise<void>;
 export declare const getUserProfile: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 export declare const getUserFriends: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
+export declare const getAllUser: (req: Request, res: Response) => Promise<void>;
 export declare const sendFriendRequest: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 export declare const acceptFriendRequest: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;
 export declare const getAllPendingRequest: (req: Request, res: Response) => Promise<express.Response<any, Record<string, any>> | undefined>;

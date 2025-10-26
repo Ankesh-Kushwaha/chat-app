@@ -29,6 +29,8 @@ export const userSignup = async (req, res) => {
             email,
             password: hashedPassword,
         });
+        const createdUser = newUser.toObject();
+        delete createdUser.password;
         //generate the token 
         const token = jwt.sign({
             userId: newUser._id,
@@ -39,7 +41,8 @@ export const userSignup = async (req, res) => {
             return res.status(200).json({
                 success: true,
                 token,
-                message: "user successfully logged in"
+                message: "user successfully logged in",
+                createdUser
             });
         }
     }
@@ -70,6 +73,8 @@ export const userLogin = async (req, res) => {
         if (!passwordVerification)
             return res.status(400).json("password is invalid");
         //generate  token 
+        const createdUser = user.toObject();
+        delete createdUser.password;
         const token = jwt.sign({
             userId: user._id,
         }, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '7d' });
@@ -77,6 +82,7 @@ export const userLogin = async (req, res) => {
             success: true,
             message: "user logged in successfully",
             token,
+            createdUser
         });
     }
     catch (err) {
@@ -149,7 +155,7 @@ export const getUserProfile = async (req, res) => {
 };
 export const getUserFriends = async (req, res) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.userId;
         if (!userId)
             return res.status(400).json("userId is required");
         const user = await User.findById(userId)
@@ -162,16 +168,37 @@ export const getUserFriends = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "user friends data fetched successfully!",
-            friends: user,
+            friends: user.friends,
         });
     }
     catch (err) {
         if (err instanceof Error) {
-            logger.error("getting pending requests:", err.message);
+            logger.error("getting user friends requests:", err.message);
             res.status(500).json({ success: false, message: "Something went wrong" });
         }
         else {
             logger.error("error while getting pending request:", String(err));
+            res.status(500).json({ success: false, message: "Unknown error" });
+        }
+    }
+};
+export const getAllUser = async (req, res) => {
+    try {
+        logger.info("get all user endpoints hit");
+        const users = await User.find();
+        res.status(200).json({
+            success: true,
+            message: "all user fetched successfully",
+            users,
+        });
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            logger.error("error while getting all user:", err.message);
+            res.status(500).json({ success: false, message: "Something went wrong" });
+        }
+        else {
+            logger.error("error while getting all user:", String(err));
             res.status(500).json({ success: false, message: "Unknown error" });
         }
     }
@@ -263,14 +290,14 @@ export const acceptFriendRequest = async (req, res) => {
 export const getAllPendingRequest = async (req, res) => {
     try {
         logger.info("getAllPendingRequest endpoint hit.");
-        const userId = req.params.userId;
-        const requests = await FriendRequest.find({ receiver: userId, status: "pending" })
+        const userId = req.userId;
+        const pending = await FriendRequest.find({ receiver: userId, status: "pending" })
             .populate("sender", "name email");
         const sentRequest = await FriendRequest.find({ sender: userId, status: "pending" }).populate("sender", "name email");
         return res.status(200).json({
             success: true,
-            requests,
-            sentRequest
+            sentRequest,
+            pending
         });
     }
     catch (err) {
