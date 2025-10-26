@@ -85,7 +85,7 @@ export class SignalingServer {
     if (!user) return;
 
     user.rooms.push(roomId);
-    user.senderId = senderId.toString();
+    user.senderId = senderId;
 
     if (this.isFirstSubscriber(roomId)) {
       console.log(`[Redis] Subscribing to channel: ${roomId}`);

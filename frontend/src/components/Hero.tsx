@@ -60,7 +60,7 @@ export const Hero: React.FC = () => {
               whileHover={{ scale: 1.05, boxShadow: "0 8px 20px rgba(99,102,241,0.25)" }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/chatroom')}
-              className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition-all w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition-all w-full sm:w-auto cursor-pointer"
             >
               <Send size={18} />
               Get Started
@@ -70,10 +70,10 @@ export const Hero: React.FC = () => {
               whileHover={{ scale: 1.05, boxShadow: "0 8px 20px rgba(99,102,241,0.25)" }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/community')}
-              className="inline-flex items-center justify-center gap-3 bg-white/90 text-indigo-600 px-6 py-3 rounded-xl font-semibold shadow-md border border-indigo-300 hover:bg-indigo-50 transition-all w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-3 bg-white/90 text-indigo-600 px-6 py-3 rounded-xl font-semibold shadow-md border border-indigo-300 hover:bg-indigo-50 transition-all w-full sm:w-auto cursor-pointer"
             >
               <Users size={18} />
-              Explore Community
+              Create Your Room
             </motion.button>
 
             <motion.button

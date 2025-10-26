@@ -27,5 +27,15 @@ export declare const loginVerification: z.ZodObject<{
     email: string;
     password: string;
 }>;
+export declare const communityCreationVerification: z.ZodObject<{
+    name: z.ZodString;
+    description: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    description: string;
+}, {
+    name: string;
+    description: string;
+}>;
 export declare const validate: (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => Response<any, Record<string, any>> | undefined;
 //# sourceMappingURL=zodVerification.d.ts.map

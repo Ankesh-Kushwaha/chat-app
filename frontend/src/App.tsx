@@ -45,7 +45,7 @@ const App: React.FC = () => {
         } 
       />
       <Route 
-        path='/rooms' 
+        path='/rooms/:roomId' 
         element={
           <ProtectedRoute>
             <RoomPage />

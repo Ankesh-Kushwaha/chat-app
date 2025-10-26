@@ -1,70 +1,183 @@
-import React, { useState } from "react";
-import {
-  Users,
-  MessageCircle,
-  Search,
-  Send,
-  CheckCircle2,
-  LogIn,
-  LogOut,
-  UserCircle2,
-} from "lucide-react";
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
+import {Users,MessageCircle, Search, Send, CheckCircle2, LogIn, LogOut, PlusCircle, XCircle} from "lucide-react";
+import axios from "axios";
+import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom";
+import avatar from '../../public/logo-icon.webp'
 
 type Room = {
-  id: number;
+  id: string;
   name: string;
   description: string;
-  members: number;
+  members: string[];
 };
 
-const roomsData: Room[] = [
-  { id: 1, name: "Tech Talk", description: "Discuss latest tech trends", members: 23 },
-  { id: 2, name: "Gaming", description: "Game strategies & news", members: 17 },
-  { id: 3, name: "Music", description: "Share your favorite songs", members: 10 },
-  { id: 4, name: "Fitness", description: "Workout tips & plans", members: 8 },
-  { id: 5, name: "Travel", description: "Travel stories & advice", members: 12 },
-];
-
 const CommunityPage: React.FC = () => {
+  const [rooms, setRooms] = useState<Room>([]);
   const [activeRoom, setActiveRoom] = useState<Room | null>(null);
-  const [joinedRooms, setJoinedRooms] = useState<number[]>([]);
+  const [joinedRooms, setJoinedRooms] = useState<string[]>([]);
   const [messages, setMessages] = useState<
     { user: string; text: string; time: string; avatar: string }[]
   >([]);
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [newRoom, setNewRoom] = useState({ name: "", description: "" });
+  const navigate = useNavigate();
 
-  const filteredRooms = roomsData.filter((room) =>
+  const filteredRooms = rooms.filter((room) =>
     room.name.toLowerCase().includes(search.toLowerCase())
   );
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+  
 
-  const handleSendMessage = () => {
-    if (!input.trim() || !activeRoom) return;
-    const now = new Date();
-    const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    const avatar = `https://api.dicebear.com/9.x/avataaars/svg?seed=You`;
+useEffect(() => {
+  const fetchRooms = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/community/get/all", {
+        headers: {
+          Authorization:`Bearer ${token}`
+        }
+      });
 
-    setMessages([
-      ...messages,
-      { user: "You", text: input, time, avatar },
-    ]);
-    setInput("");
-  };
+      if (res.data.success === true || res.data.success === "true") {
+        const communities = res.data.communities;
+        setRooms(communities);
 
-  const handleJoinLeaveRoom = (roomId: number) => {
-    if (joinedRooms.includes(roomId)) {
-      setJoinedRooms(joinedRooms.filter((id) => id !== roomId));
-    } else {
-      setJoinedRooms([...joinedRooms, roomId]);
+    
+        const joined = communities
+          .filter((room: any) => room.members.includes(userId))
+          .map((room: any) => room._id);
+        setJoinedRooms(joined);
+      }
+    } catch (err) {
+      console.error("Error fetching rooms:", err);
     }
   };
+
+  fetchRooms();
+}, []);
+
+
+const handleJoinLeaveRoom = async (roomId: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    if (!token || !userId) {
+      toast.error("Please log in first");
+      return;
+    }
+
+    const joined = joinedRooms.includes(roomId);
+    const url = joined
+      ? "http://localhost:3000/api/community/leave"
+      : "http://localhost:3000/api/community/join";
+
+    const res = await axios.post(
+      url,
+      { communityId: roomId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.data.success) {
+      if (joined) {
+        // Leaving
+        setJoinedRooms((prev) => prev.filter((id) => id !== roomId));
+        setRooms((prev) =>
+          prev.map((room) =>
+            room._id === roomId
+              ? {
+                  ...room,
+                  members: room.members.filter(
+                    (id) => String(id) !== String(userId)
+                  ),
+                }
+              : room
+          )
+        );
+        toast.success("You left the community");
+      } else {
+        // Joining
+        setJoinedRooms((prev) => [...prev, roomId]);
+        setRooms((prev) =>
+          prev.map((room) =>
+            room._id === roomId
+              ? {
+                  ...room,
+                  members: [...room.members, String(userId)],
+                }
+              : room
+          )
+        );
+        toast.success("Joined the community successfully!");
+      }
+    } else {
+      toast.error(res.data.message || "Failed to update community status");
+    }
+  } catch (error: any) {
+    console.error("Join/Leave error:", error);
+    toast.error(error.response?.data?.message || "Something went wrong");
+  }
+};
+
+
+
+  const handleCreateRoom = async(e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!newRoom.name.trim() || !newRoom.description.trim()) return;
+      const res = await axios.post(
+        'http://localhost:3000/api/community/create',
+        {
+          name: newRoom.name.trim(),
+          description: newRoom.description.trim(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.data.success == true) {
+        toast.success(res.data.message);
+      }
+      else {
+        toast.error("error while creating room")
+      }
+      setShowModal(false);
+    }
+    catch (err:any) {
+      console.log("errror while creating room", err.message);
+    }
+  };
+
+  
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-100 to-green-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col">
       <div className="max-w-7xl mx-auto px-6 py-10 w-full">
-        <h2 className="text-5xl font-extrabold text-green-800 dark:text-green-400 text-center mb-10 drop-shadow">
-          Community Rooms
-        </h2>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+          <h2 onClick={() => navigate('/')} className="text-5xl font-extrabold text-green-800 dark:text-green-400 text-center drop-shadow cursor-pointer flex justify-center">
+            <img className="h-15 w-15 rounded-full m-1" src={avatar} alt="" />
+           Create Your Room or Join One
+          </h2>
+          <button
+            onClick={() => setShowModal(true)}
+            className="mt-6 md:mt-0 px-5 py-2 flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full shadow-md hover:shadow-lg hover:opacity-90 transition"
+          >
+            <PlusCircle className="w-5 h-5" /> Create Room
+          </button>
+        </div>
 
         {/* Search Bar */}
         <div className="relative max-w-md mx-auto mb-8">
@@ -81,12 +194,12 @@ const CommunityPage: React.FC = () => {
         {/* Room Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
           {filteredRooms.map((room) => {
-            const joined = joinedRooms.includes(room.id);
+            const joined = joinedRooms.includes(room._id);
             return (
               <div
-                key={room.id}
+                key={room._id}
                 className={`p-6 rounded-2xl bg-white/60 dark:bg-gray-800/70 backdrop-blur shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all border relative overflow-hidden ${
-                  activeRoom?.id === room.id ? "border-green-500" : "border-transparent"
+                  activeRoom?.id === room._id ? "border-green-500" : "border-transparent"
                 }`}
               >
                 <div className="flex justify-between items-start mb-3">
@@ -95,12 +208,18 @@ const CommunityPage: React.FC = () => {
                     onClick={() => setActiveRoom(room)}
                   >
                     <Users className="w-5 h-5 text-green-600" />
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    <h3
+                        onClick={() => {
+                            room.members.includes(userId)
+                              ? navigate(`/rooms/${room._id}`)
+                              : toast.error("Please join the room first");
+                        }} 
+                      className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                       {room.name}
                     </h3>
                   </div>
                   <button
-                    onClick={() => handleJoinLeaveRoom(room.id)}
+                    onClick={() => handleJoinLeaveRoom(room._id)}
                     className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm transition ${
                       joined
                         ? "bg-green-100 dark:bg-green-700 text-green-700 dark:text-white hover:bg-green-200 dark:hover:bg-green-600"
@@ -118,15 +237,12 @@ const CommunityPage: React.FC = () => {
                     )}
                   </button>
                 </div>
-
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                   {room.description}
                 </p>
-
-                <div className="text-xs text-gray-500 flex items-center gap-1">
-                  <Users className="w-4 h-4" /> {room.members} members
+                <div className="text-xs text-green-500 flex items-center gap-1">
+                  <Users className="w-4 h-4" /> {room.members.length} members
                 </div>
-
                 {joined && (
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-600 rounded-b-2xl" />
                 )}
@@ -134,100 +250,60 @@ const CommunityPage: React.FC = () => {
             );
           })}
         </div>
+      </div>
 
-        {/* Chat + Info Panel */}
-        {activeRoom && (
-          <div className="flex flex-col md:flex-row gap-6 animate-fadeIn">
-            {/* Chat Area */}
-            <div className="md:w-2/3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 flex flex-col border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700 pb-3">
-                <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-                  #{activeRoom.name}
-                </h3>
-                <span className="text-sm text-gray-400">
-                  {activeRoom.members} online
-                </span>
-              </div>
-
-              <div className="flex-1 overflow-y-auto mb-4 h-80 space-y-4 scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-200 dark:scrollbar-thumb-green-600">
-                {messages.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center mt-20">
-                    No messages yet. Start the conversation 👋
-                  </p>
-                ) : (
-                  messages.map((msg, idx) => (
-                    <div
-                      key={idx}
-                      className={`flex ${
-                        msg.user === "You" ? "justify-end" : "justify-start"
-                      }`}
-                    >
-                      <div
-                        className={`flex items-end gap-2 max-w-[75%] ${
-                          msg.user === "You" ? "flex-row-reverse" : "flex-row"
-                        }`}
-                      >
-                        <img
-                          src={msg.avatar}
-                          alt="avatar"
-                          className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700"
-                        />
-                        <div
-                          className={`px-4 py-2 rounded-2xl text-sm ${
-                            msg.user === "You"
-                              ? "bg-green-600 text-white"
-                              : "bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-gray-800"
-                          }`}
-                        >
-                          <p>{msg.text}</p>
-                          <span className="block text-[10px] text-gray-300 mt-1">
-                            {msg.time}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="flex gap-3 mt-auto">
+      {/* Create Room Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-fadeInUp">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
+            >
+              <XCircle className="w-6 h-6" />
+            </button>
+            <h3 className="text-2xl font-bold text-center text-green-700 dark:text-green-400 mb-4">
+              Create a New Room
+            </h3>
+            <form onSubmit={handleCreateRoom} className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                  Room Name
+                </label>
                 <input
                   type="text"
-                  placeholder="Type a message..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  className="flex-1 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-gray-200 transition"
+                  value={newRoom.name}
+                  onChange={(e) => setNewRoom({ ...newRoom, name: e.target.value })}
+                  placeholder="Enter room name"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-green-400"
+                  required
                 />
-                <button
-                  onClick={handleSendMessage}
-                  className="px-5 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full hover:opacity-90 flex items-center gap-1 transition"
-                >
-                  <Send className="w-4 h-4" /> Send
-                </button>
               </div>
-            </div>
-
-            {/* Info Panel */}
-            <div className="md:w-1/3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 flex flex-col">
-              <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-green-600" /> About #{activeRoom.name}
-              </h4>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                {activeRoom.description}
-              </p>
-              <div className="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-1 mb-4">
-                <Users className="w-4 h-4" /> {activeRoom.members} members currently
+              <div>
+                <label className="block text-sm text-gray-600 dark:text-gray-300 mb-1">
+                  Description
+                </label>
+                <textarea
+                  value={newRoom.description}
+                  onChange={(e) =>
+                    setNewRoom({ ...newRoom, description: e.target.value })
+                  }
+                  placeholder="Enter room description"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-green-400"
+                  rows={3}
+                  required
+                />
               </div>
               <button
-                onClick={() => setActiveRoom(null)}
-                className="mt-auto px-5 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full hover:opacity-90 transition flex items-center gap-1 justify-center"
+                type="submit"
+                className="w-full py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-semibold rounded-full hover:opacity-90 transition"
               >
-                <LogOut className="w-4 h-4" /> Leave Chat
+                Create Room
               </button>
-            </div>
+            </form>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

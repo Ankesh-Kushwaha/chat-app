@@ -15,6 +15,10 @@ export const loginVerification = z.object({
     password: z.string({ required_error: "Password is required" })
         .min(6, "Password must be at least 6 characters"),
 });
+export const communityCreationVerification = z.object({
+    name: z.string({ required_error: "community name is required" }),
+    description: z.string({ required_error: "community description is required" })
+});
 export const validate = (schema) => (req, res, next) => {
     try {
         schema.parse(req.body);

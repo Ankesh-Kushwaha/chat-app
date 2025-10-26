@@ -40,7 +40,7 @@ export const createCommunity = async (req: Request, res: Response) => {
 export const DeleteCommunity = async (req: Request, res: Response) => {
   try {
     logger.info("delete community endpoint hit...")
-    const communityId = req.params;
+    const {communityId }= req.params;
     if (!communityId) return res.status(400).json("community id is required");
     const community = await Community.findById(communityId);
     if (!community) return res.status(400).json("community does not exist");
@@ -86,7 +86,7 @@ export const GetALLCommunity = async (req: Request, res: Response) => {
 
 export const GetSingleCommunity = async (req: Request, res: Response) => {
   try {
-    const communityId = req.params;
+    const  {communityId }= req.params;
     if (!communityId) return res.status(200).json("communityId is required");
     const community = await Community.findById(communityId).populate("members","-password");
     if (!community) return res.status(400).json("no community exist");
@@ -112,14 +112,14 @@ export const GetSingleCommunity = async (req: Request, res: Response) => {
 export const LeaveCommunity = async (req: Request, res: Response) => {
   try {
     logger.info("leave community endpoint hit.")
-    const communityId = req.body;
+    const  {communityId} = req.body;
     const userId = (req as AuthenticatedRequest).userId;
     if (!communityId || !userId) return res.status(400).json("community or user id is missing");
     const community = await Community.findById(communityId);
     if (!community) return res.status(400).json("community does not exist");
     if (!community.members.includes(new Types.ObjectId(userId))) return res.status(400).json("you are not member of this community");
     //remove the particular member from the community;
-    community.members.filter((memberId) => !memberId.equals(new Types.ObjectId(userId)));
+    community.members= community.members.filter((memberId) => !memberId.equals(new Types.ObjectId(userId)));
     await community.save();
     res.status(200).json({
       success: true,
@@ -140,40 +140,47 @@ export const LeaveCommunity = async (req: Request, res: Response) => {
   }
 }
 
+
 export const JoinACommunity = async (req: Request, res: Response) => {
   try {
-    logger.info("join community enpoint hit.")
-    const communityId = req.body;
+    logger.info("join community endpoint hit.");
+    const { communityId }  = req.body;  
     const userId = (req as AuthenticatedRequest).userId;
-    if (!communityId || !userId) return res.status(400).json("community or user id is missing");
+    if (!communityId || !userId)
+      return res.status(400).json("community or user id is missing");
+
     const community = await Community.findById(communityId);
     if (!community) return res.status(400).json("community does not exist");
-    if (community?.members.includes(new Types.ObjectId(userId))) return res.status(400).json("already member");
-    community?.members.push(new Types.ObjectId(userId));
-    await community?.save();
+
+    if (community.members.includes(new Types.ObjectId(userId)))
+      return res.status(400).json("already member");
+
+    community.members.push(new Types.ObjectId(userId));
+    await community.save();
+
     res.status(200).json({
       success: true,
-      message: "join the community successfully",
-      community
+      message: "joined the community successfully",
+      community,
     });
-  }
-  catch (err: unknown) {
+  } catch (err: unknown) {
     if (err instanceof Error) {
       logger.error("join community endpoints error", err.message);
       res.status(500).json({
         success: false,
         message: "something went wrong",
-      })
+      });
     } else {
       logger.error("join community endpoint error:", String(err));
     }
   }
-}
+};
+
 
 export const GetALLCommunityUser= async (req: Request, res: Response) => {
   try {
     logger.info("get community users endpoint hit.");
-    const communityId = req.body;
+    const {communityId} = req.body;
     if (!communityId) return res.status(400).json("community id required");
     const community = await Community.findById(communityId).populate("members","-password");
     if (!community) return res.status(400).json("community does not exist");

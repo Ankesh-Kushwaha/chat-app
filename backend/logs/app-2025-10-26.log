@@ -345,3 +345,71 @@
 2025-10-26 16:08:40 [INFO]: get all user endpoints hit
 2025-10-26 16:08:40 [INFO]: getAllPendingRequest endpoint hit.
 2025-10-26 16:08:40 [INFO]: getAllPendingRequest endpoint hit.
+2025-10-26 18:48:21 [INFO]: create community end point hit....
+2025-10-26 18:48:21 [ERROR]: error while creating community
+2025-10-26 18:49:34 [INFO]: create community end point hit....
+2025-10-26 18:50:09 [INFO]: create community end point hit....
+2025-10-26 18:50:41 [INFO]: create community end point hit....
+2025-10-26 18:51:10 [INFO]: create community end point hit....
+2025-10-26 18:51:50 [INFO]: create community end point hit....
+2025-10-26 18:55:07 [INFO]: create community end point hit....
+2025-10-26 18:55:07 [ERROR]: error while creating community
+2025-10-26 18:56:13 [INFO]: create community end point hit....
+2025-10-26 18:56:13 [ERROR]: error while creating community
+2025-10-26 18:57:28 [INFO]: create community end point hit....
+2025-10-26 18:57:28 [ERROR]: error while creating community
+2025-10-26 18:59:09 [INFO]: create community end point hit....
+2025-10-26 18:59:09 [ERROR]: error while creating community
+2025-10-26 18:59:45 [INFO]: join community enpoint hit.
+2025-10-26 19:00:34 [INFO]: join community enpoint hit.
+2025-10-26 19:00:34 [ERROR]: join community endpoints error
+2025-10-26 19:02:08 [INFO]: join community enpoint hit.
+2025-10-26 19:05:19 [ERROR]: error while getting single community
+2025-10-26 19:08:11 [INFO]: create community end point hit....
+2025-10-26 19:48:01 [INFO]: join community enpoint hit.
+2025-10-26 19:48:15 [INFO]: join community enpoint hit.
+2025-10-26 19:48:22 [INFO]: join community enpoint hit.
+2025-10-26 19:48:37 [INFO]: join community enpoint hit.
+2025-10-26 19:51:31 [INFO]: join community enpoint hit.
+2025-10-26 19:51:31 [ERROR]: join community endpoints error
+2025-10-26 19:55:12 [INFO]: join community endpoint hit.
+2025-10-26 19:56:50 [INFO]: join community endpoint hit.
+2025-10-26 19:56:50 [ERROR]: join community endpoints error
+2025-10-26 20:00:54 [INFO]: join community endpoint hit.
+2025-10-26 20:00:58 [INFO]: leave community endpoint hit.
+2025-10-26 20:08:04 [INFO]: join community endpoint hit.
+2025-10-26 20:08:14 [INFO]: join community endpoint hit.
+2025-10-26 20:08:18 [INFO]: join community endpoint hit.
+2025-10-26 20:08:21 [INFO]: join community endpoint hit.
+2025-10-26 20:08:22 [INFO]: join community endpoint hit.
+2025-10-26 20:08:30 [INFO]: join community endpoint hit.
+2025-10-26 20:11:40 [INFO]: leave community endpoint hit.
+2025-10-26 20:11:44 [INFO]: join community endpoint hit.
+2025-10-26 23:09:23 [INFO]: create community end point hit....
+2025-10-26 23:10:30 [INFO]: create community end point hit....
+2025-10-26 23:14:15 [INFO]: getUserProfile endpoint hit
+2025-10-26 23:14:15 [INFO]: getUserProfile endpoint hit
+2025-10-26 23:18:26 [INFO]: create community end point hit....
+2025-10-26 23:18:26 [ERROR]: error while creating community
+2025-10-26 23:20:05 [INFO]: create community end point hit....
+2025-10-26 23:20:05 [ERROR]: error while creating community
+2025-10-26 23:22:20 [INFO]: create community end point hit....
+2025-10-26 23:22:32 [INFO]: leave community endpoint hit.
+2025-10-26 23:22:41 [INFO]: leave community endpoint hit.
+2025-10-26 23:22:49 [INFO]: leave community endpoint hit.
+2025-10-26 23:28:23 [INFO]: leave community endpoint hit.
+2025-10-26 23:37:54 [INFO]: join community endpoint hit.
+2025-10-26 23:39:31 [INFO]: leave community endpoint hit.
+2025-10-26 23:39:41 [INFO]: leave community endpoint hit.
+2025-10-26 23:41:13 [INFO]: leave community endpoint hit.
+2025-10-26 23:44:31 [INFO]: leave community endpoint hit.
+2025-10-26 23:44:37 [INFO]: join community endpoint hit.
+2025-10-26 23:46:45 [INFO]: join community endpoint hit.
+2025-10-26 23:46:51 [INFO]: leave community endpoint hit.
+2025-10-26 23:47:59 [INFO]: join community endpoint hit.
+2025-10-26 23:48:04 [INFO]: leave community endpoint hit.
+2025-10-26 23:50:05 [INFO]: join community endpoint hit.
+2025-10-26 23:50:10 [INFO]: leave community endpoint hit.
+2025-10-26 23:51:18 [INFO]: join community endpoint hit.
+2025-10-26 23:51:24 [INFO]: leave community endpoint hit.
+2025-10-26 23:52:18 [INFO]: join community endpoint hit.
