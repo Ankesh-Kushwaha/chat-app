@@ -1,21 +1,21 @@
 import mongoose from "mongoose";
 export declare const FriendRequest: mongoose.Model<{
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps, {}, {}, {}, mongoose.Document<unknown, {}, {
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps, {}, {
     timestamps: true;
 }> & {
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -23,22 +23,22 @@ export declare const FriendRequest: mongoose.Model<{
 }, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
 }, {
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
 }>> & mongoose.FlatRecord<{
-    status: "pending" | "accepted" | "declined";
     createdAt: NativeDate;
     sender: mongoose.Types.ObjectId;
     receiver: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "declined";
 } & mongoose.DefaultTimestampProps> & {
     _id: mongoose.Types.ObjectId;
 } & {

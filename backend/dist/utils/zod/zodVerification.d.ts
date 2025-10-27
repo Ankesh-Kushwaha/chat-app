@@ -6,36 +6,14 @@ export declare const signupVerification: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
     bio: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    name: string;
-    email: string;
-    password: string;
-    bio: string;
-}, {
-    name: string;
-    email: string;
-    password: string;
-    bio: string;
-}>;
+}, z.core.$strip>;
 export declare const loginVerification: z.ZodObject<{
     email: z.ZodString;
     password: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    email: string;
-    password: string;
-}, {
-    email: string;
-    password: string;
-}>;
+}, z.core.$strip>;
 export declare const communityCreationVerification: z.ZodObject<{
     name: z.ZodString;
     description: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    name: string;
-    description: string;
-}, {
-    name: string;
-    description: string;
-}>;
+}, z.core.$strip>;
 export declare const validate: (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => Response<any, Record<string, any>> | undefined;
 //# sourceMappingURL=zodVerification.d.ts.map
