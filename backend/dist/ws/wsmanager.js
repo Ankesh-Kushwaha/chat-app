@@ -109,7 +109,6 @@ export class SignalingServer {
             time: new Date().toISOString(),
         }));
     }
-    /** --- Utility Methods --- */
     handleClose(id) {
         const user = this.subscriptions[id];
         if (!user)

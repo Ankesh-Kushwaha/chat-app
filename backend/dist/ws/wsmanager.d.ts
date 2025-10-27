@@ -16,7 +16,6 @@ export declare class SignalingServer {
     private handleUnsubscribe;
     private handleTyping;
     private handlePublish;
-    /** --- Utility Methods --- */
     private handleClose;
     private broadcast;
     private isFirstSubscriber;
