@@ -1,3 +1,4 @@
+// ws/wsmanager.ts
 import { WebSocketServer, WebSocket } from "ws";
 import { main, type RedisClients } from "../redisClient.js";
 
@@ -18,13 +19,14 @@ export class SignalingServer {
     this.publishClient = publishClient;
     this.subscribeClient = subscribeClient;
 
-    // Attach WS to existing HTTP server
+    // Attach WebSocket to existing HTTP server
     this.wss = new WebSocketServer({ server });
     console.log("[SignalingServer] WS attached to HTTP server");
+
     this.listen();
   }
 
-  // Singleton accessor
+  /** Singleton accessor */
   static async getInstance(server?: any) {
     if (!this.instance) {
       const { publishClient, subscribeClient }: RedisClients = await main();
@@ -80,21 +82,21 @@ export class SignalingServer {
     }
   }
 
+  /** Subscribe local user to a room and Redis channel */
   private handleSubscribe(id: string, data: any) {
     const { roomId, senderId } = data;
     const user = this.subscriptions[id];
     if (!user) return;
 
-    user.rooms.push(roomId);
+    // Add room to local subscription
+    if (!user.rooms.includes(roomId)) user.rooms.push(roomId);
     user.senderId = senderId;
 
-    if (this.isFirstSubscriber(roomId)) {
-      console.log(`[Redis] Subscribing to channel: ${roomId}`);
-      this.subscribeClient.subscribe(roomId, (message: string) => {
-        const parsedMsg = JSON.parse(message);
-        this.broadcast(roomId, parsedMsg, parsedMsg.senderId);
-      });
-    }
+    // Always subscribe Redis to propagate messages for this room
+    this.subscribeClient.subscribe(roomId, (message: string) => {
+      const parsedMsg = JSON.parse(message);
+      this.broadcastToLocalSockets(parsedMsg.roomId, parsedMsg.senderId, parsedMsg);
+    });
   }
 
   private handleUnsubscribe(id: string, data: any) {
@@ -104,12 +106,12 @@ export class SignalingServer {
 
     user.rooms = user.rooms.filter((r) => r !== roomId);
 
-    if (this.isLastSubscriber(roomId)) {
-      console.log(`[Redis] Unsubscribing from channel: ${roomId}`);
-      this.subscribeClient.unsubscribe(roomId);
-    }
+    // Optional: Unsubscribe Redis if no local user in room
+    const hasLocalUsers = Object.values(this.subscriptions).some((u) => u.rooms.includes(roomId));
+    if (!hasLocalUsers) this.subscribeClient.unsubscribe(roomId);
   }
 
+  /** Broadcast typing events to local users */
   private handleTyping(data: any) {
     const { roomId, senderId, isTyping } = data;
     Object.values(this.subscriptions).forEach((user) => {
@@ -119,9 +121,9 @@ export class SignalingServer {
     });
   }
 
+  /** Publish messages to Redis */
   private handlePublish(data: any) {
     const { roomId, message, senderId, userName, avatar } = data;
-
     this.publishClient.publish(
       roomId,
       JSON.stringify({
@@ -136,36 +138,28 @@ export class SignalingServer {
     );
   }
 
+  /** Clean up on connection close */
   private handleClose(id: string) {
     const user = this.subscriptions[id];
     if (!user) return;
 
     user.rooms.forEach((roomId) => {
-      if (this.isLastSubscriber(roomId)) {
-        this.subscribeClient.unsubscribe(roomId);
-      }
+      // Unsubscribe Redis if no other local user in this room
+      const hasLocalUsers = Object.values(this.subscriptions).some((u) => u.rooms.includes(roomId) && u.ws !== user.ws);
+      if (!hasLocalUsers) this.subscribeClient.unsubscribe(roomId);
     });
 
     delete this.subscriptions[id];
     console.log(`[WS] Connection closed (${id})`);
   }
 
-  private broadcast(roomId: string, message: any, senderId: string) {
+  /** Broadcast to all local sockets */
+  private broadcastToLocalSockets(roomId: string, senderId: string, message: any) {
     Object.values(this.subscriptions).forEach((user) => {
       if (user.rooms.includes(roomId) && user.senderId !== senderId) {
         user.ws.send(JSON.stringify(message));
       }
     });
-  }
-
-  private isFirstSubscriber(roomId: string) {
-    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId))
-      .length === 1;
-  }
-
-  private isLastSubscriber(roomId: string) {
-    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId))
-      .length === 0;
   }
 
   private generateId() {
