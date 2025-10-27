@@ -5,11 +5,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AuthModal } from "../components/RegisterModal.tsx";
 import { toast } from "react-toastify";
 import axios from 'axios';
+const base_url = import.meta.env.VITE_BASE_URL;
 
 const Header: React.FC = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   const [showProfile, setShowProfile] = useState(false);
+  console.log(base_url);
 
   useEffect(() => {
      const token = localStorage.getItem("token");
@@ -18,7 +20,7 @@ const Header: React.FC = () => {
      if (token && userId) {
        // Fetch user info
        axios
-         .get(`http://localhost:3000/api/user/get-profile/${userId}`, {
+         .get(`${base_url}/user/get-profile/${userId}`, {
            headers: { Authorization: `Bearer ${token}` },
          })
          .then((res) => {

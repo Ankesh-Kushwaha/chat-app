@@ -10,6 +10,7 @@ import ProfileModal from "../components/ProfileModal.tsx";
 import SectionContainer from "../components/SectionConatiner.tsx";
 import ScrollDots from "../components/ScrollDots.tsx";
 import { useNavigate } from "react-router-dom";
+const base_url = import.meta.env.VITE_BASE_URL;
 
 type User = {
   _id: string;
@@ -67,14 +68,14 @@ const FriendsPage: React.FC = () => {
     const fetchData = async () => {
       try {
         // All users
-        const resUsers = await axios.get("http://localhost:3000/api/user/all", {
+        const resUsers = await axios.get(`${base_url}/user/all`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const filteredUsers = resUsers.data.users.filter((u: User) => u._id !== currentUserId);
         setAllUsers(filteredUsers);
 
         //get all friends
-        const res = await axios.get(`http://localhost:3000/api/user/get-friends`, {
+        const res = await axios.get(`${base_url}/user/get-friends`, {
           headers: {
             Authorization:`Bearer ${token}`
           }
@@ -82,7 +83,7 @@ const FriendsPage: React.FC = () => {
 
         setFriends(res.data.friends);
 
-        const resRequests = await axios.get("http://localhost:3000/api/user/get-all-pending-request", {
+        const resRequests = await axios.get(`${base_url}/user/get-all-pending-request`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -125,7 +126,7 @@ const FriendsPage: React.FC = () => {
     if (!currentUserId) return toast.error("You must be logged in to send a friend request");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/user/send/friend-request",
+        `${base_url}/user/send/friend-request`,
         { senderId: currentUserId, receiverId: receiver._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -144,7 +145,7 @@ const FriendsPage: React.FC = () => {
   const acceptRequest = async (requestId: string) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/user/accept/friend-request",
+        `${base_url}/user/accept/friend-request`,
         { requestId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

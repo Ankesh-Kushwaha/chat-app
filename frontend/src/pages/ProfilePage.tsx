@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import avatar from '../../public/logo-icon.webp'
 
+const base_url = import.meta.env.VITE_BASE_URL;
+
 const getUserProfile = async () => {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
   if (!userId || !token) throw new Error("User not logged in");
 
-  const res = await axios.get(`http://localhost:3000/api/user/get-profile/${userId}`, {
+  const res = await axios.get(`${base_url}/user/get-profile/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;

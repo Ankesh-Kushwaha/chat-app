@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 import avatar from '../../public/logo-icon.webp'
+const base_url = import.meta.env.VITE_BASE_URL;
 
 type Room = {
   id: string;
@@ -37,7 +38,7 @@ const CommunityPage: React.FC = () => {
 useEffect(() => {
   const fetchRooms = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/community/get/all", {
+      const res = await axios.get(`${base_url}/community/get/all`, {
         headers: {
           Authorization:`Bearer ${token}`
         }
@@ -73,8 +74,8 @@ const handleJoinLeaveRoom = async (roomId: string) => {
 
     const joined = joinedRooms.includes(roomId);
     const url = joined
-      ? "http://localhost:3000/api/community/leave"
-      : "http://localhost:3000/api/community/join";
+      ? `${base_url}/community/leave`
+      : `${base_url}/community/join`;
 
     const res = await axios.post(
       url,
@@ -135,7 +136,7 @@ const handleJoinLeaveRoom = async (roomId: string) => {
     try {
       if (!newRoom.name.trim() || !newRoom.description.trim()) return;
       const res = await axios.post(
-        'http://localhost:3000/api/community/create',
+        `${base_url}/community/create`,
         {
           name: newRoom.name.trim(),
           description: newRoom.description.trim(),

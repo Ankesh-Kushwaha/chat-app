@@ -98,13 +98,14 @@ export class SignalingServer {
         });
     }
     handlePublish(data) {
-        const { roomId, message, senderId } = data;
+        const { roomId, message, senderId, userName, avatar } = data;
         this.publishClient.publish(roomId, JSON.stringify({
             e: "message",
             roomId,
             message,
             senderId,
-            senderName: "User",
+            userName,
+            avatar,
             time: new Date().toISOString(),
         }));
     }

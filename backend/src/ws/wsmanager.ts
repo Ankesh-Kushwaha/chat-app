@@ -117,23 +117,24 @@ export class SignalingServer {
       }
     });
   }
+private handlePublish(data: any) {
+  const { roomId, message, senderId, userName, avatar } = data;
 
-  private handlePublish(data: any) {
-    const { roomId, message, senderId } = data;
-    this.publishClient.publish(
+  this.publishClient.publish(
+    roomId,
+    JSON.stringify({
+      e: "message",
       roomId,
-      JSON.stringify({
-        e: "message",
-        roomId,
-        message,
-        senderId,
-        senderName: "User",
-        time: new Date().toISOString(),
-      })
-    );
-  }
+      message,
+      senderId,
+      userName, 
+      avatar,   
+      time: new Date().toISOString(),
+    })
+  );
+}
 
-  /** --- Utility Methods --- */
+
   private handleClose(id: string) {
     const user = this.subscriptions[id];
     if (!user) return;

@@ -4,6 +4,7 @@ import { Mail, Lock, User, Text } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+const base_url = import.meta.env.VITE_BASE_URL;
 
 type Props = {
   open: boolean;
@@ -37,8 +38,8 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
 
     try {
       const url = isLogin
-        ? "http://localhost:3000/api/user/login"
-        : "http://localhost:3000/api/user/signup";
+        ? `${base_url}/user/login`
+        : `${base_url}/user/signup`;
 
       const payload = isLogin ? { email, password } : { name, email, password,bio };
       const res = await axios.post(url, payload);
