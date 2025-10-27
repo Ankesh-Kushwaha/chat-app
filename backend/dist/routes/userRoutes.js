@@ -1,6 +1,5 @@
 import express, { application } from 'express';
 import { userSignup, userLogin, getUserProfile, getUserFriends, deleteProfile, sendFriendRequest, acceptFriendRequest, declineArequest, getAllPendingRequest, updateProfile, getAllUser } from '../controllers/userController.js';
-import { validate } from '../utils/zod/zodVerification.js';
 import { authenticate } from '../middlewares/auth.js';
 const router = express.Router();
 router.post('/signup', userSignup);

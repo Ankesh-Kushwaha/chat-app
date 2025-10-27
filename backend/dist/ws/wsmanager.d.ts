@@ -5,13 +5,12 @@ export declare class SignalingServer {
     private subscribeClient;
     private subscriptions;
     private constructor();
-    static getInstance(): Promise<SignalingServer>;
-    /** WebSocket Connection Setup */
+    static getInstance(server?: any): Promise<SignalingServer>;
+    /** WebSocket connection setup */
     private listen;
     private handleConnection;
-    /** Handle incoming messages from clients */
+    /** Handle incoming messages */
     private handleMessage;
-    /** --- Handlers --- */
     private handleSubscribe;
     private handleUnsubscribe;
     private handleTyping;

@@ -1,5 +1,5 @@
 import { WebSocketServer, WebSocket } from "ws";
-import { main, type RedisClients } from "../redisClient.js"
+import { main, type RedisClients } from "../redisClient.js";
 
 interface Subscription {
   ws: WebSocket;
@@ -14,40 +14,42 @@ export class SignalingServer {
   private subscribeClient;
   private subscriptions: Record<string, Subscription> = {};
 
-  private constructor(publishClient: any, subscribeClient: any) {
+  private constructor(server: any, publishClient: any, subscribeClient: any) {
     this.publishClient = publishClient;
     this.subscribeClient = subscribeClient;
-    this.wss = new WebSocketServer({ port: 8080 });
 
-    console.log("[SignalingServer] Listening on ws://localhost:8080");
+    // Attach WS to existing HTTP server
+    this.wss = new WebSocketServer({ server });
+    console.log("[SignalingServer] WS attached to HTTP server");
     this.listen();
   }
 
   // Singleton accessor
-  static async getInstance() {
+  static async getInstance(server?: any) {
     if (!this.instance) {
       const { publishClient, subscribeClient }: RedisClients = await main();
-      this.instance = new SignalingServer(publishClient, subscribeClient);
+      if (!server) throw new Error("HTTP server is required for production WS");
+      this.instance = new SignalingServer(server, publishClient, subscribeClient);
     }
     return this.instance;
   }
 
-  /** WebSocket Connection Setup */
+  /** WebSocket connection setup */
   private listen() {
-    this.wss.on("connection", (socket) => this.handleConnection(socket));
+    this.wss.on("connection", (ws: WebSocket) => this.handleConnection(ws));
   }
 
   private handleConnection(ws: WebSocket) {
     const id = this.generateId();
     this.subscriptions[id] = { ws, senderId: "", rooms: [] };
-
     console.log(`[WS] New connection (${id})`);
 
     ws.on("message", (data) => this.handleMessage(id, data.toString()));
     ws.on("close", () => this.handleClose(id));
+    ws.on("error", (err) => console.error(`[WS] Error (${id}):`, err));
   }
 
-  /** Handle incoming messages from clients */
+  /** Handle incoming messages */
   private handleMessage(id: string, rawData: string) {
     let parsed;
     try {
@@ -78,7 +80,6 @@ export class SignalingServer {
     }
   }
 
-  /** --- Handlers --- */
   private handleSubscribe(id: string, data: any) {
     const { roomId, senderId } = data;
     const user = this.subscriptions[id];
@@ -117,23 +118,23 @@ export class SignalingServer {
       }
     });
   }
-private handlePublish(data: any) {
-  const { roomId, message, senderId, userName, avatar } = data;
 
-  this.publishClient.publish(
-    roomId,
-    JSON.stringify({
-      e: "message",
+  private handlePublish(data: any) {
+    const { roomId, message, senderId, userName, avatar } = data;
+
+    this.publishClient.publish(
       roomId,
-      message,
-      senderId,
-      userName, 
-      avatar,   
-      time: new Date().toISOString(),
-    })
-  );
-}
-
+      JSON.stringify({
+        e: "message",
+        roomId,
+        message,
+        senderId,
+        userName,
+        avatar,
+        time: new Date().toISOString(),
+      })
+    );
+  }
 
   private handleClose(id: string) {
     const user = this.subscriptions[id];
@@ -158,11 +159,13 @@ private handlePublish(data: any) {
   }
 
   private isFirstSubscriber(roomId: string) {
-    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId)).length === 1;
+    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId))
+      .length === 1;
   }
 
   private isLastSubscriber(roomId: string) {
-    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId)).length === 0;
+    return Object.values(this.subscriptions).filter((u) => u.rooms.includes(roomId))
+      .length === 0;
   }
 
   private generateId() {

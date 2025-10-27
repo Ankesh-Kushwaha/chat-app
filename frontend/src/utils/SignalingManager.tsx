@@ -1,5 +1,4 @@
-const base_url = "ws://localhost:8080";
-
+const base_url = import.meta.env.VITE_BASE_WSS_SERVER;
 export interface SignalingMessage {
   id?: number;
   data: {
