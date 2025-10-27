@@ -11,6 +11,9 @@ import CommunityRouter from './routes/community.js';
 databaseConnection();
 app.use(cors());
 app.use(express.json());
+app.use('/heath', (req, res) => {
+    res.status(200).json("Hey! Dude server is fucking  healthy!");
+});
 app.use('/api/user', userRouter);
 app.use('/api/community', CommunityRouter);
 app.listen(PORT, () => {

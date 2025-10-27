@@ -55,7 +55,6 @@ export const sendMail = async (recipientMailId, receipientName) => {
     try {
         const response = await mailerSend.email.send(emailParams);
         logger.info("message sent to user:", recipientMailId);
-        console.log("✅ Welcome email sent:", response);
     }
     catch (err) {
         logger.error("error while sending mail to :", recipientMailId);
