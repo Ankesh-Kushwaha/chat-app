@@ -1,21 +1,24 @@
-import React, { useState } from "react";
-import ChatRoom from "../components/ChatRoom.tsx";
+import { useState } from "react";
+import ChatRoom from "../components/chatRoom"
 import logo from "../../public/logo-icon-2.jpg";
 import { MessageSquare, Users, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-/**
- * @typedef {{ id: string, name: string, lastMessage?: string, avatar: string }} Contact
- */
+interface Contact {
+  id: string;
+  name: string;
+  lastMessage?: string;
+  avatar: string;
+}
 
-const ChatRoomPage = () => {
-  const [contacts] = useState([
+const ChatRoomPage: React.FC = () => {
+  const [contacts] = useState<Contact[]>([
     { id: "room1", name: "Tech Talks 💻", lastMessage: "Let’s discuss AI!", avatar: "https://i.pravatar.cc/150?img=3" },
     { id: "room2", name: "Friends ❤️", lastMessage: "Movie night?", avatar: "https://i.pravatar.cc/150?img=5" },
     { id: "room3", name: "Work Updates 🧠", lastMessage: "Deadline tomorrow!", avatar: "https://i.pravatar.cc/150?img=8" },
   ]);
 
-  const [activeRoom, setActiveRoom] = useState(null);
+  const [activeRoom, setActiveRoom] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -30,7 +33,9 @@ const ChatRoomPage = () => {
       >
         {/* App Header */}
         <div className="flex items-center justify-between p-4 bg-[#202225] border-b border-[#3A3C40] shadow-md">
-          <h1 onClick={()=>navigate('/')} className="cursor-pointer text-lg font-bold text-white tracking-wide">Chatty</h1>
+          <h1 onClick={() => navigate("/")} className="cursor-pointer text-lg font-bold text-white tracking-wide">
+            Chatty
+          </h1>
           <img src="https://i.pravatar.cc/40" alt="me" className="w-8 h-8 rounded-full border border-gray-500" />
           <button
             className="md:hidden text-white text-2xl ml-auto"
@@ -78,8 +83,8 @@ const ChatRoomPage = () => {
         <div className="p-3 border-t border-[#3A3C40] bg-[#202225]">
           <div className="flex items-center justify-around text-gray-400">
             <MessageSquare className="w-5 h-5 hover:text-indigo-400 cursor-pointer" />
-            <Users onClick={()=>{navigate('/friends')}} className="w-5 h-5 hover:text-indigo-400 cursor-pointer" />
-            <Settings onClick={()=>{navigate('/user-profile')}} className="w-5 h-5 hover:text-indigo-400 cursor-pointer" />
+            <Users onClick={() => navigate("/friends")} className="w-5 h-5 hover:text-indigo-400 cursor-pointer" />
+            <Settings onClick={() => navigate("/user-profile")} className="w-5 h-5 hover:text-indigo-400 cursor-pointer" />
           </div>
         </div>
       </div>
@@ -105,7 +110,11 @@ const ChatRoomPage = () => {
         </div>
 
         {activeRoom ? (
-          <ChatRoom roomId={activeRoom} />
+          <ChatRoom
+            roomId={activeRoom}
+            roomName={contacts.find((c) => c.id === activeRoom)?.name ?? ""}
+            users={[]} // You can later pass the actual user list
+          />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
             <img src={logo} alt="Chatty" className="w-32 rounded-full opacity-80 mb-6" />

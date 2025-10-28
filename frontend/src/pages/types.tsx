@@ -1,9 +1,9 @@
-export interface User {
-  id: string;
+export type User = {
+  _id: string;
   name: string;
-  bio: string;
-  avatar: string;
-}
+  avatar?: string;
+  bio?: string;
+};
 
 export interface FriendRequest {
   id: string;

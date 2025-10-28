@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
 import { Send, MessageCircle } from "lucide-react";
 import { SignalingManager } from "../utils/SignalingManager"; 
@@ -25,7 +27,8 @@ export default function ChatRoom({ roomId, roomName, users }: ChatRoomProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [someoneTyping, setSomeoneTyping] = useState<string | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
 
   // --- Subscribe and handle events ---
   useEffect(() => {

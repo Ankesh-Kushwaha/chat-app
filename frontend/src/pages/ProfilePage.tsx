@@ -1,90 +1,130 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
+import type{ChangeEvent} from 'react'
 import { motion } from "framer-motion";
 import { Trash2, Edit2, Save, ArrowLeft, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import avatar from '../../public/logo-icon.webp'
+import axios from "axios";
+import avatar from "../../public/logo-icon.webp";
 
-const base_url = import.meta.env.VITE_BASE_URL;
+const base_url = import.meta.env.VITE_BASE_URL as string;
 
-const getUserProfile = async () => {
+/* ----------------------------- Types ----------------------------- */
+
+interface User {
+  _id: string;
+  name: string;
+  username: string;
+  email: string;
+  bio?: string;
+  avatar?: string;
+}
+
+interface GetProfileResponse {
+  user: User;
+}
+
+/* ----------------------------- API Calls ----------------------------- */
+
+const getUserProfile = async (): Promise<GetProfileResponse> => {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
   if (!userId || !token) throw new Error("User not logged in");
 
-  const res = await axios.get(`${base_url}/user/get-profile/${userId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await axios.get<GetProfileResponse>(
+    `${base_url}/user/get-profile/${userId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return res.data;
 };
 
-
-const updateUserProfile = async (data: any) => {
+const updateUserProfile = async (data: User): Promise<User> => {
   console.log("Updated user data:", data);
+  // Example: You would call your backend API here
   return data;
 };
 
-const deleteUserProfile = async () => {
+const deleteUserProfile = async (): Promise<boolean> => {
   console.log("User deleted");
+  // Example: You would call your backend API here
   return true;
 };
 
+/* ----------------------------- Component ----------------------------- */
+
 export const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+
+  const [user, setUser] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<User | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; username?: string }>({});
 
+  /* ----------------------------- Load Profile ----------------------------- */
   useEffect(() => {
     const fetchUser = async () => {
-      const data = await getUserProfile();
-      setUser(data.user);
-      setFormData(data.user);
-      setAvatarPreview(avatar);
+      try {
+        const data = await getUserProfile();
+        setUser(data.user);
+        setFormData(data.user);
+        setAvatarPreview(data.user.avatar || avatar);
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchUser();
   }, []);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  /* ----------------------------- Handlers ----------------------------- */
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (!formData) return;
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Simple validation
     if (name === "email") {
-      setErrors({
-        ...errors,
-        email: /^\S+@\S+\.\S+$/.test(value) ? "" : "Invalid email",
-      });
+      setErrors((prev) => ({
+        ...prev,
+        email: /^\S+@\S+\.\S+$/.test(value) ? undefined : "Invalid email",
+      }));
     }
+
     if (name === "username") {
-      setErrors({
-        ...errors,
-        username: value.length >= 3 ? "" : "Username must be at least 3 characters",
-      });
+      setErrors((prev) => ({
+        ...prev,
+        username:
+          value.length >= 3
+            ? undefined
+            : "Username must be at least 3 characters",
+      }));
     }
   };
 
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && formData) {
       const reader = new FileReader();
       reader.onload = () => {
         setAvatarPreview(reader.result as string);
-        setFormData({ ...formData, avatar: reader.result });
+        setFormData({ ...formData, avatar: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleUpdate = async () => {
-    if (Object.values(errors).some((err) => err !== "")) {
+    if (!formData) return;
+
+    if (Object.values(errors).some((err) => err)) {
       alert("Please fix form errors before saving.");
       return;
     }
+
     const updated = await updateUserProfile(formData);
     setUser(updated);
     setEditMode(false);
@@ -98,8 +138,13 @@ export const ProfilePage: React.FC = () => {
   };
 
   if (!user)
-    return <div className="text-center mt-24 text-gray-400 dark:text-gray-300">Loading profile...</div>;
+    return (
+      <div className="text-center mt-24 text-gray-400 dark:text-gray-300">
+        Loading profile...
+      </div>
+    );
 
+  /* ----------------------------- JSX ----------------------------- */
   return (
     <main className="min-h-screen bg-gray-900 text-gray-100 py-12 px-4">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-3xl shadow-xl p-8 md:p-12 relative">
@@ -121,28 +166,37 @@ export const ProfilePage: React.FC = () => {
           {/* Avatar */}
           <div className="flex-shrink-0 relative">
             <img
-              src={avatarPreview || user.avatar}
+              src={avatarPreview || user.avatar || avatar}
               alt="Avatar"
               className="w-32 h-32 rounded-full border-4 border-indigo-600 shadow-md object-cover"
             />
             {editMode && (
               <label className="absolute bottom-0 right-0 bg-indigo-600 text-white rounded-full p-2 cursor-pointer hover:bg-indigo-500 transition-all">
-                <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  placeholder="please select your profile pic"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
                 <Edit2 size={16} />
               </label>
             )}
           </div>
 
-          {/* User info */}
+          {/* User Info */}
           <div className="flex-1 space-y-4 w-full">
             {/* Name */}
             <div>
-              <label className="block text-sm font-semibold text-gray-400">Name</label>
+              <label className="block text-sm font-semibold text-gray-400">
+                Name
+              </label>
               {editMode ? (
                 <input
                   type="text"
                   name="name"
-                  value={formData.name}
+                  placeholder="enter your name"
+                  value={formData?.name || ""}
                   onChange={handleChange}
                   className="mt-1 block w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-900 text-gray-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
@@ -153,19 +207,26 @@ export const ProfilePage: React.FC = () => {
 
             {/* Username */}
             <div>
-              <label className="block text-sm font-semibold text-gray-400">Username</label>
+              <label className="block text-sm font-semibold text-gray-400">
+                Username
+              </label>
               {editMode ? (
                 <>
                   <input
                     type="text"
                     name="username"
-                    value={formData.userName}
+                    placeholder="enter your name"
+                    value={formData?.username || ""}
                     onChange={handleChange}
                     className={`mt-1 block w-full border rounded-xl px-4 py-2 bg-gray-900 text-gray-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
-                      errors.userName ? "border-red-500" : "border-gray-700"
+                      errors.username ? "border-red-500" : "border-gray-700"
                     }`}
                   />
-                  {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+                  {errors.username && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.username}
+                    </p>
+                  )}
                 </>
               ) : (
                 <p className="mt-1 text-gray-300">@{user.username}</p>
@@ -174,19 +235,24 @@ export const ProfilePage: React.FC = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-gray-400">Email</label>
+              <label className="block text-sm font-semibold text-gray-400">
+                Email
+              </label>
               {editMode ? (
                 <>
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    placeholder="enter your email"
+                    value={formData?.email || ""}
                     onChange={handleChange}
                     className={`mt-1 block w-full border rounded-xl px-4 py-2 bg-gray-900 text-gray-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
                       errors.email ? "border-red-500" : "border-gray-700"
                     }`}
                   />
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
                 </>
               ) : (
                 <p className="mt-1 text-gray-300">{user.email}</p>
@@ -195,11 +261,14 @@ export const ProfilePage: React.FC = () => {
 
             {/* Bio */}
             <div>
-              <label className="block text-sm font-semibold text-gray-400">Bio</label>
+              <label className="block text-sm font-semibold text-gray-400">
+                Bio
+              </label>
               {editMode ? (
                 <textarea
                   name="bio"
-                  value={formData.bio}
+                  placeholder="enter you bio"
+                  value={formData?.bio || ""}
                   onChange={handleChange}
                   rows={3}
                   className="mt-1 block w-full border border-gray-700 rounded-xl px-4 py-2 bg-gray-900 text-gray-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -209,7 +278,7 @@ export const ProfilePage: React.FC = () => {
               )}
             </div>
 
-            {/* Action buttons */}
+            {/* Action Buttons */}
             <div className="flex flex-wrap gap-4 mt-4">
               {editMode ? (
                 <motion.button
@@ -262,7 +331,8 @@ export const ProfilePage: React.FC = () => {
             />
             <h2 className="text-xl font-bold">Delete Profile?</h2>
             <p className="mt-2 text-gray-300">
-              Are you sure you want to delete your profile? This action cannot be undone.
+              Are you sure you want to delete your profile? This action cannot
+              be undone.
             </p>
             <div className="flex justify-center gap-4 mt-6">
               <button

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useRef } from "react";
 import {
   Send,
@@ -7,21 +8,21 @@ import {
   Search,
   Smile,
 } from "lucide-react";
-import EmojiPicker from "emoji-picker-react"; // 🧩 Emoji picker
+import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import avatar from "../../public/logo-icon.webp";
 import { toast } from "react-toastify";
 import { SignalingManager } from "../utils/SignalingManager";
 
-const base_url = import.meta.env.VITE_BASE_URL;
+const base_url = import.meta.env.VITE_BASE_URL as string;
 
 type User = {
   _id: string;
   name: string;
-  bio: string;
-  email: string;
-  profilePic: string;
+  bio?: string;
+  email?: string;
+  profilePic?: string;
   status?: "online" | "offline";
 };
 
@@ -34,16 +35,18 @@ type ChatMessage = {
 };
 
 const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
-  const { roomId } = useParams();
-  const [user, setUser] = useState<User>();
+  const token = localStorage.getItem("token") || "";
+  const userId = localStorage.getItem("userId") || "";
+  const { roomId } = useParams<{ roomId: string }>();
+
+  const [user, setUser] = useState<User | null>(null);
   const [roomName, setRoomName] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
   const [typingUser, setTypingUser] = useState<string | null>(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // 🧩
+  const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const emojiRef = useRef<HTMLDivElement>(null);
   const signaling = SignalingManager.getInstance();
@@ -69,38 +72,45 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch room data and user data
+  // Fetch room + user data
   useEffect(() => {
+    if (!roomId) return;
+
     const fetchRoomData = async () => {
       try {
-        const res = await axios.get(
-          `${base_url}/community/get/${roomId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await axios.get(`${base_url}/community/get/${roomId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (res.data.success) {
-          setUsers(res.data.community.members);
+          setUsers(res.data.community.members || []);
           setRoomName(res.data.community.name);
-        } else toast.error("Error fetching room data");
+        } else {
+          toast.error("Error fetching room data");
+        }
       } catch (error) {
         console.error("Fetch Room Error:", error);
       }
     };
 
     const fetchUserData = async () => {
-      const res = await axios.get(
-        `${base_url}/user/get-profile/${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setUser(res.data.user);
+      try {
+        const res = await axios.get(`${base_url}/user/get-profile/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.data.user) setUser(res.data.user);
+      } catch (err) {
+        console.error("Fetch User Error:", err);
+      }
     };
 
     fetchRoomData();
     fetchUserData();
-  }, [roomId]);
+  }, [roomId, token, userId]);
 
   // WebSocket subscribe + listen
   useEffect(() => {
     if (!roomId || !userId) return;
+
     signaling.emit("subscribe", { roomId, userId });
 
     const cbMsg = `msg-${userId}-${roomId}`;
@@ -108,18 +118,9 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
 
     signaling.registerCallback(
       "message",
-      (data) => {
+      (data: ChatMessage & { roomId: string }) => {
         if (data.roomId === roomId && data.senderId !== userId) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              senderId: data.senderId,
-              message: data.message,
-              time: data.time,
-              avatar: data.avatar,
-              userName: data.userName,
-            },
-          ]);
+          setMessages((prev) => [...prev, data]);
         }
       },
       cbMsg
@@ -127,7 +128,7 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
 
     signaling.registerCallback(
       "typing",
-      (data) => {
+      (data: { roomId: string; senderId: string; userName: string }) => {
         if (data.roomId === roomId && data.senderId !== userId) {
           setTypingUser(data.userName);
           setTimeout(() => setTypingUser(null), 2000);
@@ -141,15 +142,19 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       signaling.deRegisterCallback("message", cbMsg);
       signaling.deRegisterCallback("typing", cbTyping);
     };
-  }, [roomId, userId]);
+  }, [roomId, userId, signaling]);
 
   const handleSend = () => {
-    if (!input.trim() || !roomId) return;
-    const now = new Date();
-    const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    if (!input.trim() || !roomId || !userId) return;
 
-    const msg = {
-      senderId: userId!,
+    const now = new Date();
+    const time = now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const msg: ChatMessage & { roomId: string } = {
+      senderId: userId,
       roomId,
       message: input,
       time,
@@ -163,6 +168,7 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   };
 
   const handleTyping = () => {
+    if (!roomId || !userId) return;
     signaling.emit("typing", {
       roomId,
       senderId: userId,
@@ -170,13 +176,13 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     });
   };
 
-  const onEmojiClick = (emojiObject: any) => {
-    setInput((prev) => prev + emojiObject.emoji);
+  const onEmojiClick = (emojiData: EmojiClickData) => {
+    setInput((prev) => prev + emojiData.emoji);
   };
 
   return (
     <div className="h-screen flex bg-gradient-to-br from-green-50 via-emerald-100 to-green-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* LEFT SIDEBAR - MEMBERS LIST */}
+      {/* LEFT SIDEBAR */}
       <aside className="w-80 h-full bg-white/70 dark:bg-gray-800/80 backdrop-blur-lg border-r border-gray-200 dark:border-gray-700 flex flex-col">
         <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
           <h2 className="text-xl font-bold text-green-700 dark:text-green-400 flex items-center gap-2">
@@ -192,7 +198,6 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
           )}
         </div>
 
-        {/* Member Search */}
         <div className="p-3 border-b border-gray-200 dark:border-gray-700">
           <div className="relative">
             <Search className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
@@ -204,32 +209,32 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
           </div>
         </div>
 
-        {/* Members List */}
         <div className="flex-1 overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-thumb-green-400/70 scrollbar-track-transparent">
-          {users.map((user) => (
+          {users.map((member) => (
             <div
-              key={user._id}
+              key={member._id}
               className="flex items-center gap-3 p-2 rounded-xl hover:bg-green-50 dark:hover:bg-gray-700 transition"
             >
               <img
-                src={user.profilePic || avatar}
-                alt={user.name}
+                src={member.profilePic || avatar}
+                alt={member.name}
                 className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700"
               />
               <div>
                 <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                  {user.name}
+                  {member.name}
                 </h4>
-                <p className="text-xs text-gray-400">{user.bio}</p>
+                {member.bio && (
+                  <p className="text-xs text-gray-400">{member.bio}</p>
+                )}
               </div>
             </div>
           ))}
         </div>
       </aside>
 
-      {/* RIGHT SIDE - CHAT */}
+      {/* MAIN CHAT AREA */}
       <main className="flex-1 flex flex-col h-full max-h-screen">
-        {/* HEADER */}
         <div className="p-5 border-b border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 backdrop-blur-lg flex justify-between items-center">
           <div className="flex items-center gap-2">
             <MessageCircle className="text-green-600 w-6 h-6" />
@@ -237,10 +242,9 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
               {roomName}
             </h2>
           </div>
-          <span className="text-sm text-gray-400">{users?.length} members</span>
+          <span className="text-sm text-gray-400">{users.length} members</span>
         </div>
 
-        {/* CHAT MESSAGES */}
         <div
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto p-6 space-y-5 scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-200 dark:scrollbar-thumb-green-600"
@@ -290,7 +294,6 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
           )}
         </div>
 
-        {/* INPUT SECTION */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 backdrop-blur-lg flex items-center gap-3 relative">
           {/* EMOJI PICKER BUTTON */}
           <div className="relative" ref={emojiRef}>
@@ -302,18 +305,10 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             </button>
 
             {showEmojiPicker && (
-              <div
-                onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSend();
-                      }
-                }}
-                
-                className="absolute bottom-12 left-0 z-50">
+              <div className="absolute bottom-12 left-0 z-50">
                 <EmojiPicker
                   onEmojiClick={onEmojiClick}
-                  theme="auto"
+                  theme={"auto" as any}
                   width={320}
                   height={400}
                 />
@@ -321,7 +316,6 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             )}
           </div>
 
-          {/* MESSAGE INPUT */}
           <input
             type="text"
             placeholder="Type a message..."
@@ -339,7 +333,6 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             className="flex-1 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-green-400 dark:bg-gray-900 dark:text-gray-200"
           />
 
-          {/* SEND BUTTON */}
           <button
             onClick={handleSend}
             className="px-5 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full hover:opacity-90 flex items-center gap-1 transition"

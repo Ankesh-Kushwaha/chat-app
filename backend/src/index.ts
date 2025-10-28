@@ -6,6 +6,7 @@ import { databaseConnection } from "./utils/db/db.js";
 import { SignalingServer } from "./ws/wsmanager.js";
 import userRouter from "./routes/userRoutes.js";
 import CommunityRouter from "./routes/community.js";
+import path from 'path';
 
 import type { Request, Response } from "express";
 
@@ -13,6 +14,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const __dirname= path.resolve();
 
 // Database connection
 databaseConnection();
@@ -28,6 +30,13 @@ app.use("/health", (req: Request, res: Response) => {
 // API routes
 app.use("/api/user", userRouter);
 app.use("/api/community", CommunityRouter);
+
+if (process.env.NODE_ENV ==="production") {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get(/.*/, (_, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
 
 // Create HTTP server
 const server = http.createServer(app);

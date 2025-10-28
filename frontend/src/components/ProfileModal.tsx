@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import type { User } from "../pages/types.tsx";
+import type { User } from '../pages/FriendsPage'
 
 interface ProfileModalProps {
   user: User | null;
