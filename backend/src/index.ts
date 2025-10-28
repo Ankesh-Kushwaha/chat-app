@@ -31,12 +31,12 @@ app.use("/health", (req: Request, res: Response) => {
 app.use("/api/user", userRouter);
 app.use("/api/community", CommunityRouter);
 
-if (process.env.NODE_ENV ==="production") {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  app.get(/.*/, (_, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
+// if (process.env.NODE_ENV ==="production") {
+//   app.use(express.static(path.join(__dirname, '../frontend/dist')));
+//   app.get(/.*/, (_, res) => {
+//     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+//   });
+// }
 
 // Create HTTP server
 const server = http.createServer(app);
