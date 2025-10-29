@@ -7,6 +7,7 @@ import CommunityPage from './pages/Community';
 import RoomPage from './pages/RoomPage';
 import FriendsPage from './pages/FriendsPage';
 import { ProfilePage } from './pages/ProfilePage';
+import {toast} from 'react-toastify'
 
 // Define a type for ProtectedRoute props
 interface ProtectedRouteProps {
@@ -18,7 +19,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    alert("You must be logged in to access this page!");
+    toast.error("You must be logged in to access this page!");
     return <Navigate to="/" replace />; // Redirect to homepage
   }
 
