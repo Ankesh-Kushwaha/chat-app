@@ -2,6 +2,9 @@ import { createClient } from 'redis';
 import dotenv from 'dotenv';
 import connectToDataBase from './config.js';
 import Room from './model/ChatMessageSchema.js';
+const PORT = process.env.PORT;
+import express from 'express';
+const app = express();
 
 dotenv.config();
 
@@ -86,4 +89,13 @@ const main = async () => {
   console.log('Subscriber is listening and buffering messages...');
 };
 
-main().catch(console.error);
+
+app.use("/", (req, res) => {
+  res.status(200).json("server is fucking running");
+})
+
+app.listen(PORT, () => {
+  main().catch(console.error);
+  console.log('server is running on port:3000')
+})
+
