@@ -105,10 +105,21 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       }
     };
 
-    const fetchPreviousMessages = async () => {
-      const res = await axios.get(`${message_backup_service_url}/chat/chathistory/${roomId}`);
-      setMessages(res.data.message);
-    }
+   const fetchPreviousMessages = async () => {
+      try {
+        const res = await axios.get(`${message_backup_service_url}/chat/chathistory/${roomId}`);
+        if (res.data && Array.isArray(res.data.message)) {
+          setMessages(res.data.message);
+        } else {
+          setMessages([]); // fallback
+        }
+      }
+      catch (err) {
+        console.error("Error fetching previous messages:", err);
+        setMessages([]); // ensure it's always an array
+      }
+    };
+
 
     fetchRoomData();
     fetchUserData();
