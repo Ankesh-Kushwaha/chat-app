@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { SignalingManager } from "../utils/SignalingManager";
 
 const base_url = import.meta.env.VITE_BASE_URL as string;
+const message_backup_service_url = import.meta.env.VITE_BASE_MESSAGE_BACKUP_SERVICE as string;
 
 type User = {
   _id: string;
@@ -105,7 +106,7 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     };
 
     const fetchPreviousMessages = async () => {
-      const res = await axios.get(`http://localhost:3001/chat/chathistory/${roomId}`);
+      const res = await axios.get(`${message_backup_service_url}/chat/chathistory/${roomId}`);
       setMessages(res.data.message);
     }
 
