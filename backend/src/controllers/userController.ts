@@ -175,7 +175,7 @@ export const getUserFriends = async (req: Request, res: Response) => {
     const user = await User.findById(userId)
       .populate({
         path: "friends",
-        select: "name email profilePicture", // choose which fields to return
+        select: "name email profilePic",
       });
 
     if (!user) return res.status(400).json("user does not exist");
@@ -199,7 +199,8 @@ export const getUserFriends = async (req: Request, res: Response) => {
 export const getAllUser = async (req: Request, res: Response) => {
   try {
     logger.info("get all user endpoints hit");
-    const users = await User.find();
+    const userId = (req as AuthenticatedRequest).userId
+    const users = await User.find({ _id: { $ne:userId} });
     res.status(200).json({
       success: true,
       message: "all user fetched successfully",

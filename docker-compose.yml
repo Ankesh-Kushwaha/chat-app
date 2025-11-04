@@ -1,0 +1,57 @@
+version: "1.0"
+
+services:
+  backend:
+    build: ./backend
+    container_name: chatty-backend
+    restart: always
+    ports:
+      - "5000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_URL=redis://redis:6379
+      - MESSAGE_BACKUP_URL=http://message-backup:3001
+    depends_on:
+      - redis
+      - message-backup
+
+  message-backup:
+    build: ./messageBackup
+    container_name: chatty-message-backup
+    restart: always
+    ports:
+      - "5001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+
+
+  frontend:
+    build: ./frontend
+    container_name: chatty-frontend
+    restart: always
+    ports:
+       - "5173:5173"  
+    environment:
+      - VITE_BASE_URL=http://localhost:5000
+      - VITE_BASE_MESSAGE_BACKUP_SERVICE=http://localhost:5001
+    depends_on:
+      - backend
+      - message-backup
+
+ 
+  redis:
+    image: redis:7-alpine
+    container_name: chatty-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

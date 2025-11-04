@@ -25,7 +25,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ user, onClose }) => (
         >
           <div className="flex flex-col items-center text-center">
             <img
-              src={user.avatar}
+              src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user._id}`}
               alt={user.name}
               className="w-24 h-24 rounded-full border-4 border-blue-600 object-cover mb-3"
             />
@@ -37,7 +37,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ user, onClose }) => (
               </button>
               <button
                 onClick={onClose}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-1 rounded-md"
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-1 rounded-md cursor-pointer"
               >
                 Close
               </button>

@@ -12,7 +12,6 @@ import {
 import EmojiPicker, { type EmojiClickData } from "emoji-picker-react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import avatar from "../../public/logo-icon.webp";
 import { toast } from "react-toastify";
 import { SignalingManager } from "../utils/SignalingManager";
 
@@ -234,7 +233,7 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
               className="flex items-center gap-3 p-2 rounded-xl hover:bg-green-50 dark:hover:bg-gray-700 transition"
             >
               <img
-                src={member.profilePic || avatar}
+                src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${member._id}`}
                 alt={member.name}
                 className="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-700"
               />

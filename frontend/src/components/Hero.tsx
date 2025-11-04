@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
 
   // Smooth scroll function
   const scrollToFeatures = () => {
@@ -59,7 +60,7 @@ export const Hero: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 8px 20px rgba(99,102,241,0.25)" }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/chatroom')}
+              onClick={() => navigate(`/chatroom/${userId}`)}
               className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition-all w-full sm:w-auto cursor-pointer"
             >
               <Send size={18} />

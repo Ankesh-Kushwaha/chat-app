@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Trash2, Edit2, Save, ArrowLeft, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import avatar from "../../public/logo-icon.webp";
+
 
 const base_url = import.meta.env.VITE_BASE_URL as string;
 
@@ -71,7 +71,7 @@ export const ProfilePage: React.FC = () => {
         const data = await getUserProfile();
         setUser(data.user);
         setFormData(data.user);
-        setAvatarPreview(data.user.avatar || avatar);
+        setAvatarPreview(data.user.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${localStorage.getItem('userId')}`);
       } catch (err) {
         console.error(err);
       }
@@ -151,7 +151,7 @@ export const ProfilePage: React.FC = () => {
         {/* Back button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-gray-300 hover:text-white mb-6"
+          className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 cursor-pointr"
         >
           <ArrowLeft size={20} />
           Back
@@ -166,7 +166,7 @@ export const ProfilePage: React.FC = () => {
           {/* Avatar */}
           <div className="flex-shrink-0 relative">
             <img
-              src={avatarPreview || user.avatar || avatar}
+              src={avatarPreview || `https://api.dicebear.com/9.x/avataaars/svg?seed=${localStorage.getItem('userId')}`}
               alt="Avatar"
               className="w-32 h-32 rounded-full border-4 border-indigo-600 shadow-md object-cover"
             />

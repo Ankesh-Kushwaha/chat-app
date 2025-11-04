@@ -49,10 +49,11 @@ export const AuthModal: React.FC<Props> = ({ open, onClose, onAuthSuccess }) => 
         toast.success(isLogin ? "Login successful!" : "Account created!");
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.createdUser._id);
+        const userId = res.data.createdUser._id;
         onAuthSuccess?.({ name: res.data.createdUser.name || name, email });
         onClose();
         resetForm();
-        navigate("/chatroom");
+        navigate(`/chatroom/${userId}`);
       } else {
         toast.error(isLogin ? "Login failed!" : "Registration failed!");
       }

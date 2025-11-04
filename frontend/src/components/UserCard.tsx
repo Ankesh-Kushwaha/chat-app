@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import type { User } from '../pages/types.tsx'
-import avatar from '../../public/logo-icon.webp'
+
 
 interface UserCardProps {
   user: User;
@@ -18,7 +18,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, actionButton, onClick }) => (
   >
     <div className="flex items-center gap-4">
       <img
-        src={avatar}
+        src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user._id}`}
         alt={user.name}
         className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
       />

@@ -42,7 +42,7 @@ const FriendsPage: React.FC = () => {
   const [searchUser, setSearchUser] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const currentUserId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
   // --- Scroll controls ---
@@ -79,7 +79,7 @@ const FriendsPage: React.FC = () => {
         const headers = { Authorization: `Bearer ${token}` };
 
         const resUsers = await axios.get<{ users: User[] }>(`${base_url}/user/all`, { headers });
-        const filteredUsers = resUsers.data.users.filter((u) => u._id !== currentUserId);
+        const filteredUsers = resUsers.data.users.filter((u) => u._id !== userId);
         setAllUsers(filteredUsers);
 
         const resFriends = await axios.get<{ friends: User[] }>(`${base_url}/user/get-friends`, { headers });
@@ -119,7 +119,7 @@ const FriendsPage: React.FC = () => {
     };
 
     fetchData();
-  }, [token, currentUserId]);
+  }, [token, userId]);
 
   // --- Filters ---
   const filteredUsers = allUsers.filter((u) =>
@@ -128,22 +128,22 @@ const FriendsPage: React.FC = () => {
 
   // --- Friend actions ---
   const sendFriendRequest = async (receiver: User) => {
-    if (!currentUserId) return toast.error("You must be logged in to send a friend request");
+    if (!userId) return toast.error("You must be logged in to send a friend request");
     try {
       const response = await axios.post<{ _id: string }>(
         `${base_url}/user/send/friend-request`,
-        { senderId: currentUserId, receiverId: receiver._id },
+        { senderId: userId, receiverId: receiver._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setOutgoingRequests((prev) => [
         ...prev,
-        { id: response.data._id, sender: { _id: currentUserId, name: "You" }, receiver, status: "pending" },
+        { id: response.data._id, sender: { _id:userId, name: "You" }, receiver, status: "pending" },
       ]);
 
       toast.success(`Friend request sent to ${receiver.name}`);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to send friend request");
+      toast.error(err.response.data || "Failed to send friend request");
     }
   };
 
@@ -190,7 +190,7 @@ const FriendsPage: React.FC = () => {
         {/* Find Friends */}
         <SectionContainer style={{ opacity: opacity1, x: x1 }}>
           <div className={sectionStyle}>
-            <button onClick={() => navigate("/chatroom")} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4">
+            <button onClick={() => navigate(`/chatroom/${userId}`)} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4 cursor-pointer">
               <ArrowLeft size={18} /> Back
             </button>
             <h2 className="text-3xl font-bold text-blue-400 mb-6 text-center neon-text">Find New Friends</h2>
@@ -233,7 +233,7 @@ const FriendsPage: React.FC = () => {
         {/* Friend Requests */}
         <SectionContainer style={{ opacity: opacity2, x: x2 }}>
           <div className={sectionStyle}>
-            <button onClick={handleBack} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4">
+            <button onClick={handleBack} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4 cursor-pointer">
               <ArrowLeft size={18} /> Back
             </button>
             <h2 className="text-3xl font-bold text-green-400 mb-6 text-center neon-text">Friend Requests</h2>
@@ -294,7 +294,7 @@ const FriendsPage: React.FC = () => {
         {/* My Friends */}
         <SectionContainer style={{ opacity: opacity3, x: x3 }}>
           <div className={sectionStyle}>
-            <button onClick={handleBack} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4">
+            <button onClick={handleBack} className="flex items-center gap-2 text-gray-400 hover:text-white mb-4 cursor-pointer">
               <ArrowLeft size={18} /> Back
             </button>
             <h2 className="text-3xl font-bold text-purple-400 mb-6 text-center neon-text">My Friends</h2>

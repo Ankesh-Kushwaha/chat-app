@@ -1,0 +1,47 @@
+2025-11-05 04:28:27 [ERROR]: error in auth middleware
+2025-11-05 04:28:27 [ERROR]: error in auth middleware
+2025-11-05 04:28:30 [ERROR]: error in auth middleware
+2025-11-05 04:28:30 [ERROR]: error in auth middleware
+2025-11-05 04:28:32 [ERROR]: error in auth middleware
+2025-11-05 04:28:32 [ERROR]: error in auth middleware
+2025-11-05 04:28:36 [ERROR]: error in auth middleware
+2025-11-05 04:28:36 [ERROR]: error in auth middleware
+2025-11-05 04:28:50 [ERROR]: error in auth middleware
+2025-11-05 04:28:50 [ERROR]: error in auth middleware
+2025-11-05 04:28:50 [ERROR]: error in auth middleware
+2025-11-05 04:28:50 [ERROR]: error in auth middleware
+2025-11-05 04:28:52 [ERROR]: error in auth middleware
+2025-11-05 04:28:52 [ERROR]: error in auth middleware
+2025-11-05 04:29:23 [ERROR]: error in auth middleware
+2025-11-05 04:29:23 [ERROR]: error in auth middleware
+2025-11-05 04:29:58 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:29:58 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:30:07 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:30:07 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:30:11 [INFO]: get all user endpoints hit
+2025-11-05 04:30:11 [INFO]: get all user endpoints hit
+2025-11-05 04:30:11 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:30:11 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:30:21 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:30:21 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:30:27 [INFO]: get all user endpoints hit
+2025-11-05 04:30:27 [INFO]: get all user endpoints hit
+2025-11-05 04:30:27 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:30:27 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:30:28 [INFO]:  send friend request endpoint hit
+2025-11-05 04:30:33 [INFO]:  send friend request endpoint hit
+2025-11-05 04:33:14 [INFO]:  send friend request endpoint hit
+2025-11-05 04:33:27 [INFO]:  send friend request endpoint hit
+2025-11-05 04:33:59 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:08 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:14 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:18 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:20 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:24 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:28 [INFO]:  send friend request endpoint hit
+2025-11-05 04:34:53 [INFO]: get all user endpoints hit
+2025-11-05 04:34:53 [INFO]: get all user endpoints hit
+2025-11-05 04:34:53 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:34:54 [INFO]: getAllPendingRequest endpoint hit.
+2025-11-05 04:34:57 [INFO]: getUserProfile endpoint hit
+2025-11-05 04:34:57 [INFO]: getUserProfile endpoint hit

@@ -31,7 +31,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path='/' element={<HomePage />} />
       <Route 
-        path='/chatroom' 
+        path='/chatroom/:userId' 
         element={
           <ProtectedRoute>
             <ChatRoomPage />
