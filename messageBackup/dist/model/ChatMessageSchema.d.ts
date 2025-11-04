@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-declare const _default: mongoose.Model<{
+declare const Room: mongoose.Model<{
     roomId: string;
     messages: mongoose.Types.DocumentArray<{
         message: string;
@@ -143,5 +143,5 @@ declare const _default: mongoose.Model<{
 } & {
     __v: number;
 }>>;
-export default _default;
+export default Room;
 //# sourceMappingURL=ChatMessageSchema.d.ts.map

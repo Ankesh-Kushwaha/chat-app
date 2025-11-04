@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState, useRef } from "react";
 import {
@@ -103,9 +104,15 @@ const RoomPage: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
       }
     };
 
+    const fetchPreviousMessages = async () => {
+      const res = await axios.get(`http://localhost:3001/chat/chathistory/${roomId}`);
+      setMessages(res.data.message);
+    }
+
     fetchRoomData();
     fetchUserData();
-  }, [roomId, token, userId]);
+    fetchPreviousMessages();
+  }, [roomId, token]);
 
   // WebSocket subscribe + listen
   useEffect(() => {
