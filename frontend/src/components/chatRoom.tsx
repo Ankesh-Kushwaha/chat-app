@@ -68,7 +68,7 @@ export default function ChatRoom({ roomId, roomName, users }: ChatRoomProps) {
     const getMessageHistory = async () => {
       try {
         const res = await axios.get(
-          `${chat_backup_service}/chat/chathistory/${roomId}`,
+          `https://chat-app-messagebackup-service.onrender.com/chat/chathistory/${roomId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
