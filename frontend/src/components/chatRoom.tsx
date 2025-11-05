@@ -5,8 +5,6 @@ import { Send, MessageCircle } from "lucide-react";
 import { SignalingManager } from "../utils/SignalingManager";
 import axios from "axios";
 
-const chat_backup_service = import.meta.env.VITE_BASE_MESSAGE_BACKUP_SERVICE;
-
 interface Contact {
   _id: string;
   name: string;
